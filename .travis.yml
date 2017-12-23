@@ -8,5 +8,5 @@ cache:
 install:
     - pip install pip flake8 -r requirements.txt
 script:
-    - flake8 --exclude=venv .
+    - flake8 --max-line-length=120 --exclude=venv .
     - ./manage.py test
