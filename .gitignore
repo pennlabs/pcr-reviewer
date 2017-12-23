@@ -1,0 +1,8 @@
+*.swp
+*.swo
+
+*.pyc
+__pycache__/
+
+venv/
+db.sqlite3
