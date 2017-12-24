@@ -1,6 +1,7 @@
 body {
     background-image: url("../images/background.png");
 }
+
 .navbar-nav {
     -webkit-flex-direction: row;
     -ms-flex-direction: row;
@@ -9,4 +10,12 @@ body {
 .nav-item {
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.center-card {
+    margin: 30px auto;
+    max-width: 500px;
+}
+.center-card button {
+    cursor: pointer;
 }

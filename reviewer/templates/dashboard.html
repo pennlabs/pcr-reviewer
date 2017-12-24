@@ -1,1 +1,12 @@
 {% extends "base.html" %}
+
+{% block content %}
+<div class="card center-card">
+    <div class="card-body">
+        <h4 class="card-title">Overview</h4>
+        <p><b>{{ reviewed }}</b> out of <b>{{ total }}</b> ({% widthratio reviewed total 100|floatformat %}%) comments have been reviewed.</p>
+        <p>You have reviewed <b>{{ user_reviewed }}</b> comments so far.</p>
+        <a href="#" class="btn btn-success btn-lg">Continue Reviewing</a>
+    </div>
+</div>
+{% endblock %}

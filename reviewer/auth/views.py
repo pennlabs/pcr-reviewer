@@ -3,10 +3,19 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 
+from django.db.models import Count
+from ..reviews.models import Comment
+
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, "dashboard.html")
+        context = {
+            "reviewed": Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=3).count(),
+            "total": Comment.objects.count(),
+            "user_reviewed": Comment.objects.filter(review__reviewer=request.user).count()
+        }
+
+        return render(request, "dashboard.html", context)
     else:
         return render(request, "index.html")
 

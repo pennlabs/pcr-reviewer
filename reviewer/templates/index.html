@@ -1,12 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block css %}
-    <link href="{% static "css/login.css" %}" rel="stylesheet">
-{% endblock %}
-
 {% block content %}
-<div id="login-card" class="card">
+<div class="card center-card">
     <div class="card-body">
         <h4 class="card-title">Login</h4>
         <form action="{% url "login" %}" method="POST">
