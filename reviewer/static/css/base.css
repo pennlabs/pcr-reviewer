@@ -1,9 +1,12 @@
 body {
     background-image: url("../images/background.png");
 }
-.navbar-nav a {
-    color: white;
+.navbar-nav {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
 }
-.navbar-nav a:hover {
-    text-decoration: none;
+.nav-item {
+    margin-left: 5px;
+    margin-right: 5px;
 }
