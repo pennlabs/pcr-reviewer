@@ -32,3 +32,6 @@ class Review(models.Model):
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
     approve = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag)
+
+    def __str__(self):
+        return "{} {} {}".format(self.reviewer.username, "approved" if self.approve else "rejected", self.comment)
