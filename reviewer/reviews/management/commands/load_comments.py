@@ -73,4 +73,6 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("Finished importing comment data!"))
 
-        self.stdout.write(self.style.SUCCESS("Total Instructors: {}, Total Sections: {}, Total Comments: {}".format(len(instructors), len(sections), comments)))
+        self.stdout.write(self.style.SUCCESS("Total Instructors: {}".format(len(instructors))))
+        self.stdout.write(self.style.SUCCESS("Total Sections: {}".format(len(sections))))
+        self.stdout.write(self.style.SUCCESS("Total Comments: {}".format(comments)))
