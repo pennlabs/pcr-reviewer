@@ -6,14 +6,30 @@
 pre {
     white-space: pre-wrap;
 }
-#approve, #reject {
+button[type=submit] {
     width: 150px;
+}
+.comment {
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: white;
+}
+#comments {
+    background-color: #eee;
+    padding: 5px;
+}
+.center-card {
+    max-width: 800px;
 }
 </style>
 {% endblock %}
 
 {% block js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js" integrity="sha256-HyBiZFJAMvxOhZoWOc5LWIWaN1gcFi8LjS75BZF4afg=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 var TAG_ENDPOINT = "{% url "tags" %}";
 
@@ -37,12 +53,9 @@ $(document).ready(function() {
             });
         }
     });
-    $("form").keypress(function(e) {
-        var code = e.keyCode || e.which;
-        if (code == 13) {
-            e.preventDefault();
-            return true;
-        }
+    $("#comments").sortable().disableSelection();
+    $("form").submit(function() {
+        $("#order").val($("#comments .comment").map(function() { return $(this).attr("data-id"); }).get().join());
     });
 });
 </script>
@@ -54,15 +67,22 @@ $(document).ready(function() {
         <h4 class="card-title">Review</h4>
         <form action="{% url "review" %}" method="POST">
             {% csrf_token %}
-            <input type="hidden" name="comment" value="{{ comment.id }}" />
-            <p>{{ comment.term }} - {{ comment.section }} - {{ comment.instructor.name }}</p>
-            <pre>{{ comment.text }}</pre>
-            <input type="text" id="tags" name="tags" />
-            <p>Is this comment clean and constructive?</p>
-            <div style="text-align:center">
-                <button id="approve" name="approve" value="true" class="btn btn-success">Approve</button>
-                <button id="reject" name="approve" value="false" class="btn btn-danger">Reject</button>
+            <div class="form-group">
+                <p>Drag and drop to order the following comments from most constructive to least constructive.</p>
+                <div id="comments">
+                    {% for comment in comments %}
+                    <div class="comment" data-id="{{ comment.id }}">
+                        <pre>{{ comment.text }}</pre>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
+            <input type="hidden" id="order" name="order" />
+            <div class="form-group">
+                <p>Add tags that are relevant to this class.</p>
+                <input id="tags" name="tags" />
+            </div>
+            <button class="btn btn-primary" type="submit">Submit</button>
         </form>
     </div>
 </div>

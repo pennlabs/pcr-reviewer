@@ -4,6 +4,7 @@ from django.http import JsonResponse
 
 from .models import Comment, Review, Tag
 from django.db.models import Count
+from django.db.models.functions import Length
 
 import random
 
@@ -12,39 +13,43 @@ def get_next_comment(user):
     return Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__lt=2).exclude(review__reviewer=user).first()
 
 
+def get_next_section(user):
+    comment = get_next_comment(user)
+    if not comment:
+        return None
+    return comment.section
+
+
 def select_random_comments(section):
     comments = []
-    com = Comment.objects.filter(section=section)
+    com = Comment.objects.annotate(text_len=Length("text")).filter(section=section, text_len__gt=10)
     com_len = com.count()
-    for x in random.sample(range(com_len), 5):
-        comments.append(com[x])
+    if com_len < 5:
+        return com
+    items = list(range(com_len))
+    random.shuffle(items)
+    for x in items:
+        if all([not com[x].text == y.text for y in comments]):
+            comments.append(com[x])
+        if len(comments) >= 5:
+            break
     return comments
 
 
 def review(request):
     if request.method == "POST":
-        comment = get_object_or_404(Comment, id=request.POST.get("comment"))
-        approve = request.POST.get("approve").lower() == "true"
-        review = Review.objects.create(
-            comment=comment,
-            reviewer=request.user,
-            approve=approve
-        )
-        tags = [x.strip().lower() for x in request.POST.get("tags", "").split(",")]
-        for tag in tags:
-            if tag:
-                tagobj, _ = Tag.objects.get_or_create(name=tag)
-                review.tags.add(tagobj)
-        messages.success(request, "Review {}!".format("approved" if approve else "rejected"))
+        pass
         return redirect("review")
 
-    comment = get_next_comment(request.user)
-    if not comment:
+    section = get_next_section(request.user)
+    if not section:
         messages.success(request, "All comments have been reviewed!")
         return redirect("index")
 
+    comments = select_random_comments(section)
+
     context = {
-        "comment": comment
+        "comments": comments
     }
 
     return render(request, "review.html", context)
