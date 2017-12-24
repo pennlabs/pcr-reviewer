@@ -1,11 +1,41 @@
 {% extends "base.html" %}
 
 {% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.min.css" integrity="sha256-4BosA+P6Qycvyi2wsMf6zbq9Em7BJqMXk/SpXbQVJJY=" crossorigin="anonymous" />
 <style>
 pre {
     white-space: pre-wrap;
 }
 </style>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/js/standalone/selectize.min.js" integrity="sha256-HyBiZFJAMvxOhZoWOc5LWIWaN1gcFi8LjS75BZF4afg=" crossorigin="anonymous"></script>
+<script>
+var TAG_ENDPOINT = "{% url "tags" %}";
+
+$(document).ready(function() {
+    $("#tags").selectize({
+        delimeter: ",",
+        persist: false,
+        create: function(input) {
+            var out = input.toLowerCase();
+            return {
+                value: out,
+                text: out
+            };
+        },
+        load: function(query, callback) {
+            if (!query.length) {
+                callback();
+            }
+            $.get(TAG_ENDPOINT + "?query=" + encodeURIComponent(query), function(data) {
+                callback(data.tags.map(function(v) { return { "text": v, "value": v }; }));
+            });
+        }
+    });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -17,6 +47,7 @@ pre {
             <input type="hidden" name="comment" value="{{ comment.id }}" />
             <p>{{ comment.term }} - {{ comment.section }} - {{ comment.instructor.name }}</p>
             <pre>{{ comment.text }}</pre>
+            <input type="text" id="tags" name="tags" />
             <p>Is this comment clean and constructive?</p>
             <button name="approve" value="true" class="btn btn-success">Approve</button>
             <button name="approve" value="false" class="btn btn-danger">Reject</button>

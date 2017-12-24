@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.http import JsonResponse
 
-from .models import Comment, Review
+from .models import Comment, Review, Tag
 from django.db.models import Count
 
 
@@ -13,11 +14,15 @@ def review(request):
     if request.method == "POST":
         comment = get_object_or_404(Comment, id=request.POST.get("comment"))
         approve = request.POST.get("approve").lower() == "true"
-        Review.objects.create(
+        review = Review.objects.create(
             comment=comment,
             reviewer=request.user,
             approve=approve
         )
+        tags = [x.strip().lower() for x in request.POST.get("tags", "").split(",")]
+        for tag in tags:
+            tagobj, _ = Tag.objects.get_or_create(name=tag)
+            review.tags.add(tagobj)
         messages.success(request, "Review added!")
         return redirect("review")
 
@@ -31,3 +36,12 @@ def review(request):
     }
 
     return render(request, "review.html", context)
+
+
+def tags(request):
+    if "query" in request.GET:
+        tags = Tag.objects.filter(name__icontains=request.GET.get("query"))
+    else:
+        tags = Tag.objects.all()
+    tags = list(tags.values_list("name", flat=True))
+    return JsonResponse({"tags": tags})
