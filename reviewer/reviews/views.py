@@ -5,9 +5,20 @@ from django.http import JsonResponse
 from .models import Comment, Review, Tag
 from django.db.models import Count
 
+import random
+
 
 def get_next_comment(user):
     return Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__lt=2).exclude(review__reviewer=user).first()
+
+
+def select_random_comments(section):
+    comments = []
+    com = Comment.objects.filter(section=section)
+    com_len = com.count()
+    for x in random.sample(range(com_len), 5):
+        comments.append(com[x])
+    return comments
 
 
 def review(request):
