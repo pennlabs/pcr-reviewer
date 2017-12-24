@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html>
     <head>
@@ -6,6 +7,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger.min.css" integrity="sha256-s9TkqCOAYSX0OL0SFkn9uuNWdDLIXKMUV0ZICMxDBC8=" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger-theme-future.min.css" integrity="sha256-m1IZSnXUbZcGUBF1o2+RGqtlRd5COHrl/hSHHjvCL9E=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="{% static "css/base.css" %}">
         {% block css %}{% endblock %}
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
@@ -32,6 +34,9 @@
     <body>
         <nav class="navbar navbar-dark bg-primary">
             <a class="navbar-brand" href="{% url "index" %}">PCR Comment Reviewer</a>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url "logout" %}">Logout</a></li>
+            </ul>
         </nav>
         {% block content %}
         {% endblock %}

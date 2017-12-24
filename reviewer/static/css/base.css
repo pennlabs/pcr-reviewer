@@ -1,0 +1,9 @@
+body {
+    background-image: url("../images/background.png");
+}
+.navbar-nav a {
+    color: white;
+}
+.navbar-nav a:hover {
+    text-decoration: none;
+}
