@@ -24,7 +24,7 @@ def review(request):
             if tag:
                 tagobj, _ = Tag.objects.get_or_create(name=tag)
                 review.tags.add(tagobj)
-        messages.success(request, "Review added!")
+        messages.success(request, "Review {}!".format("approved" if approve else "rejected"))
         return redirect("review")
 
     comment = get_next_comment(request.user)
