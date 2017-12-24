@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'reviewer.auth',
     'reviewer.reviews',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
