@@ -4,7 +4,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 
 from django.db.models import Count
-from ..reviews.models import Comment
+from ..reviews.models import Comment, Review
 
 
 def index(request):
@@ -12,7 +12,8 @@ def index(request):
         context = {
             "reviewed": Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=2).count(),
             "total": Comment.objects.count(),
-            "user_reviewed": Comment.objects.filter(review__reviewer=request.user).count()
+            "user_reviewed": Comment.objects.filter(review__reviewer=request.user).count(),
+            "reviews": Review.objects.filter(reviewer=request.user).order_by("-id")[:10]
         }
 
         return render(request, "dashboard.html", context)
