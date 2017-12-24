@@ -30,4 +30,5 @@ class Comment(models.Model):
 class Review(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
+    approve = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag)
