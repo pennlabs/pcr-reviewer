@@ -10,7 +10,7 @@ from ..reviews.models import Comment
 def index(request):
     if request.user.is_authenticated:
         context = {
-            "reviewed": Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=3).count(),
+            "reviewed": Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=2).count(),
             "total": Comment.objects.count(),
             "user_reviewed": Comment.objects.filter(review__reviewer=request.user).count()
         }

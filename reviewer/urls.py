@@ -21,4 +21,5 @@ admin.site.site_header = "PCR Comment Reviewer Admin"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('reviewer.auth.urls')),
+    path('', include('reviewer.reviews.urls'))
 ]
