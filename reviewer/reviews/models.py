@@ -6,6 +6,7 @@ class Instructor(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.TextField()
 
+
 class Comment(models.Model):
     instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
     term = models.CharField(max_length=5)
