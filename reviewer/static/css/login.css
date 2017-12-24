@@ -1,0 +1,7 @@
+body {
+    background-image: url("../images/background.png");
+}
+#login-card {
+    margin: 15px auto;
+    max-width: 500px;
+}
