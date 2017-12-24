@@ -41,7 +41,7 @@ class Command(BaseCommand):
                 except IntegrityError:
                     self.stdout.write(self.style.WARNING("Duplicate instructor object ({}) with different names!").format(inst_id))
                     inst = Instructor.objects.get(id=inst_id)
-                comment = Comment.objects.create(
+                Comment.objects.create(
                     instructor=inst,
                     term=str(info[2])[1:-1],
                     section=str(info[3])[1:-1],
