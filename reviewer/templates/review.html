@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 
+{% block css %}
+<style>
+pre {
+    white-space: pre-wrap;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="card center-card">
     <div class="card-body">
         <h4 class="card-title">Review</h4>
-        <p>{{ comment.term }} - {{ comment.section }} - {{ comment.instructor.name }}</p>
-        <pre>{{ comment.text }}</pre>
-        <p>Is this comment clean and constructive?</p>
-        <button class="btn btn-success">Approve</button>
-        <button class="btn btn-danger">Reject</button>
+        <form action="{% url "review" %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="comment" value="{{ comment.id }}" />
+            <p>{{ comment.term }} - {{ comment.section }} - {{ comment.instructor.name }}</p>
+            <pre>{{ comment.text }}</pre>
+            <p>Is this comment clean and constructive?</p>
+            <button name="approve" value="true" class="btn btn-success">Approve</button>
+            <button name="approve" value="false" class="btn btn-danger">Reject</button>
+        </form>
     </div>
 </div>
 {% endblock %}
