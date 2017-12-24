@@ -4,12 +4,30 @@
         <title>PCR Comment Reviewer</title>
 
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger.min.css" integrity="sha256-s9TkqCOAYSX0OL0SFkn9uuNWdDLIXKMUV0ZICMxDBC8=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger-theme-future.min.css" integrity="sha256-m1IZSnXUbZcGUBF1o2+RGqtlRd5COHrl/hSHHjvCL9E=" crossorigin="anonymous" />
         {% block css %}{% endblock %}
 
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/js/messenger.min.js" integrity="sha256-BnQeGKS32Pt/mkLkk742fNXjfLN5/4OOd3L9PAf5d3s=" crossorigin="anonymous"></script>
         {% block js %}{% endblock %}
+        {% if messages %}
+        <script type="text/javascript">
+        window.addEventListener("load", function() {
+        {% for message in messages %}
+            {% if message.level >= 30 %}
+                Messenger().error("{{ message|escapejs }}");
+            {% elif message.level == 25 %}
+                Messenger().success("{{ message|escapejs }}");
+            {% else %}
+                Messenger().info("{{ message|escapejs }}");
+            {% endif %}
+        {% endfor %}
+        });
+        </script>
+        {% endif %}
     </head>
     <body>
         <nav class="navbar navbar-dark bg-primary">
