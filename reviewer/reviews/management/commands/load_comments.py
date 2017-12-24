@@ -33,13 +33,14 @@ class Command(BaseCommand):
                 info = statement[-2][1]
                 info = [x for x in info if not (x.ttype == sqlparse.tokens.Whitespace or x.ttype == sqlparse.tokens.Punctuation)]
                 inst_id = int(str(info[0])[1:-1])
+                inst_name = str(info[1])[1:-1]
                 try:
                     inst, _ = Instructor.objects.get_or_create(
                         id=inst_id,
-                        name=str(info[1])[1:-1]
+                        name=inst_name
                     )
                 except IntegrityError:
-                    self.stdout.write(self.style.WARNING("Duplicate instructor object ({}) with different names!").format(inst_id))
+                    self.stdout.write(self.style.WARNING("Duplicate instructor object ({}, {}) with different names!").format(inst_id, inst_name))
                     inst = Instructor.objects.get(id=inst_id)
                 Comment.objects.create(
                     instructor=inst,
