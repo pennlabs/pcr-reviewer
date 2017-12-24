@@ -27,6 +27,11 @@ class Command(BaseCommand):
         if fake:
             self.stdout.write(self.style.WARNING("Running in fake mode, no changes will be made to the database."))
 
+        existing = Comment.objects.all().count()
+
+        if existing > 0:
+            self.stdout.write(self.style.WARNING("{} comments already exist the database.").format(existing))
+
         self.stdout.write("Parsing sql file...")
 
         with open(filename, "r") as f:
