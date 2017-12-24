@@ -21,8 +21,9 @@ def review(request):
         )
         tags = [x.strip().lower() for x in request.POST.get("tags", "").split(",")]
         for tag in tags:
-            tagobj, _ = Tag.objects.get_or_create(name=tag)
-            review.tags.add(tagobj)
+            if tag:
+                tagobj, _ = Tag.objects.get_or_create(name=tag)
+                review.tags.add(tagobj)
         messages.success(request, "Review added!")
         return redirect("review")
 
