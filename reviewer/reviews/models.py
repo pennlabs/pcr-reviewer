@@ -2,8 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Instructor(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.TextField()
+
 class Comment(models.Model):
-    pass
+    instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
+    term = models.CharField(max_length=5)
+    section = models.CharField(max_length=15)
+    text = models.TextField()
 
 
 class Review(models.Model):
