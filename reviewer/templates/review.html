@@ -6,6 +6,9 @@
 pre {
     white-space: pre-wrap;
 }
+#approve, #reject {
+    width: 150px;
+}
 </style>
 {% endblock %}
 
@@ -34,6 +37,13 @@ $(document).ready(function() {
             });
         }
     });
+    $("form").keypress(function(e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return true;
+        }
+    });
 });
 </script>
 {% endblock %}
@@ -49,8 +59,10 @@ $(document).ready(function() {
             <pre>{{ comment.text }}</pre>
             <input type="text" id="tags" name="tags" />
             <p>Is this comment clean and constructive?</p>
-            <button name="approve" value="true" class="btn btn-success">Approve</button>
-            <button name="approve" value="false" class="btn btn-danger">Reject</button>
+            <div style="text-align:center">
+                <button id="approve" name="approve" value="true" class="btn btn-success">Approve</button>
+                <button id="reject" name="approve" value="false" class="btn btn-danger">Reject</button>
+            </div>
         </form>
     </div>
 </div>
