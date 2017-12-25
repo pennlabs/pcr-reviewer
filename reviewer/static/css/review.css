@@ -1,0 +1,25 @@
+pre {
+    white-space: pre-wrap;
+}
+button[type=submit] {
+    width: 150px;
+}
+.comment {
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: white;
+}
+#comments {
+    background-color: #eee;
+    padding: 5px;
+}
+.center-card {
+    max-width: 800px;
+}
+.section {
+    color: #aaa;
+}
