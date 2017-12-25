@@ -19,7 +19,9 @@ def get_next_section(user):
 
 def select_random_comments(section):
     comments = list(Comment.objects.filter(commentrating__review__section=section, commentrating__rating=1))
-    com = Comment.objects.annotate(text_len=Length("text")).filter(section=section, text_len__gt=10)
+    com_all = Comment.objects.annotate(text_len=Length("text")).filter(section=section)
+    com_short = com_all.filter(text_len__lte=10)
+    com = com_all.filter(text_len__gt=10)
     com_len = com.count()
     items = list(range(com_len))
     random.shuffle(items)
@@ -28,6 +30,8 @@ def select_random_comments(section):
             comments.append(com[x])
         if len(comments) >= 5:
             break
+    if len(comments) < 5:
+        comments += list(com_short[:5-len(comments)])
     comments.sort(key=lambda x: -len(x.text))
     return comments
 
@@ -39,7 +43,7 @@ def review(request):
         order = [x.strip() for x in request.POST.get("order").split(",")]
         order = [get_object_or_404(Comment, id=x) for x in order if x]
 
-        if len(order) > 1:
+        if len(order) >= 1:
             review = Review.objects.create(
                 section=section,
                 reviewer=request.user
