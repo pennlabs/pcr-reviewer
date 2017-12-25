@@ -9,7 +9,7 @@ from .models import Comment, Section
 
 def get_best_comments(section):
     return Comment.objects.annotate(rating_count=Count("commentrating__rating"), rating=Max("commentrating__rating")) \
-                          .filter(section=section, rating__lte=2, rating_count__gte=settings.REVIEWER_THRESHOLD) \
+                          .filter(section=section, rating__lte=settings.COMMENT_THRESHOLD, rating_count__gte=settings.REVIEWER_THRESHOLD) \
                           .distinct().values_list("text", flat=True)
 
 

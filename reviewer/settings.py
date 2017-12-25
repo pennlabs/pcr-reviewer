@@ -141,3 +141,6 @@ COMMENTS_PER_REVIEW = 5
 
 # This controls the cutoff range for short comments.
 SHORT_COMMENT_THRESHOLD = 10
+
+# This controls the maximum rating all the reviewers can give in order for this comment to be allowed.
+COMMENT_THRESHOLD = 2

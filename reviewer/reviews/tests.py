@@ -147,7 +147,7 @@ class ReviewTestCase(TestCase):
 
         CommentRating.objects.create(
             comment=comment,
-            review=review,
+            review=r3,
             rating=5
         )
 
