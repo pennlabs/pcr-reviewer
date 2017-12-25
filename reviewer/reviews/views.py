@@ -28,7 +28,7 @@ def select_random_comments(section):
             comments.append(com[x])
         if len(comments) >= 5:
             break
-    random.shuffle(comments)
+    comments.sort(key=lambda x: -len(x.text))
     return comments
 
 
