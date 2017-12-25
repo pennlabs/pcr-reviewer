@@ -20,6 +20,8 @@ class Command(BaseCommand):
 
         output = []
 
+        self.stdout.write("Exporting to '{}'".format(filename))
+
         self.stdout.write("Generating output...")
 
         for section in Section.objects.all():
@@ -30,8 +32,8 @@ class Command(BaseCommand):
                     "name": section.instructor.name
                 },
                 "section": section.name,
-                "comments": list(set(Comment.objects.filter(section=section, commentrating__rating__lt=2).values_list("text", flat=True))),
-                "tags": list(Tag.objects.filter(review__section=section).values_list("name", flat=True))
+                "comments": list(Comment.objects.filter(section=section, commentrating__rating__lt=2).distinct().values_list("text", flat=True)),
+                "tags": list(Tag.objects.filter(review__section=section).distinct().values_list("name", flat=True))
             })
 
         self.stdout.write("Exporting to json...")
