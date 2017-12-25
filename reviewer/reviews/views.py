@@ -9,6 +9,10 @@ from django.db.models.functions import Length
 import random
 
 
+COMMENTS_PER_REVIEW = 5
+SHORT_COMMENT_THRESHOLD = 10
+
+
 def get_next_comment(user):
     return Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__lt=2).exclude(review__reviewer=user).first()
 
@@ -20,18 +24,24 @@ def get_next_section(user):
 def select_random_comments(section):
     comments = list(Comment.objects.filter(commentrating__review__section=section, commentrating__rating=1))
     com_all = Comment.objects.annotate(text_len=Length("text")).filter(section=section)
-    com_short = com_all.filter(text_len__lte=10)
-    com = com_all.filter(text_len__gt=10)
+    com_short = com_all.filter(text_len__lte=SHORT_COMMENT_THRESHOLD)
+    com = com_all.filter(text_len__gt=SHORT_COMMENT_THRESHOLD)
     com_len = com.count()
     items = list(range(com_len))
     random.shuffle(items)
+    seen = set([x.text for x in comments])
     for x in items:
-        if all([not com[x].text == y.text for y in comments]):
+        if com[x].text not in seen:
             comments.append(com[x])
-        if len(comments) >= 5:
+            seen.add(com[x].text)
+        if len(comments) >= COMMENTS_PER_REVIEW:
             break
-    if len(comments) < 5:
-        comments += list(com_short[:5-len(comments)])
+    for x in com_short:
+        if len(comments) >= COMMENTS_PER_REVIEW:
+            break
+        if x.text not in seen:
+            comments.append(x)
+            seen.add(x.text)
     comments.sort(key=lambda x: -len(x.text))
     return comments
 
