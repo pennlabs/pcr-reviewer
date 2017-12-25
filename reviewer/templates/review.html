@@ -24,6 +24,9 @@ button[type=submit] {
 .center-card {
     max-width: 800px;
 }
+.section {
+    color: #aaa;
+}
 </style>
 {% endblock %}
 
@@ -64,7 +67,10 @@ $(document).ready(function() {
 {% block content %}
 <div class="card center-card">
     <div class="card-body">
-        <h4 class="card-title">Review</h4>
+        <div class="clearfix">
+            <h4 class="card-title float-left">Review</h4>
+            <small class="section float-right">{{ section }}</small>
+        </div>
         <form action="{% url "review" %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="section" value="{{ section.id }}" />
