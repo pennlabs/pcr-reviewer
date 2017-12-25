@@ -10,21 +10,4 @@
         <a href="{% url "review" %}" class="btn btn-success btn-lg">Continue Reviewing</a>
     </div>
 </div>
-<div class="card center-card">
-    <div class="card-body">
-        <h4 class="card-title">History</h4>
-        <table class="table">
-            <thead>
-                <tr><th>Comment</th><th>Approved</th></tr>
-            </thead>
-            <tbody>
-                {% for review in reviews %}
-                <tr><td>{{ review.comment }}</td><td>{{ review.approve }}</td></tr>
-                {% empty %}
-                <tr><td colspan="2">You have not reviewed any comments!</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
 {% endblock %}
