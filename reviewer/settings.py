@@ -132,6 +132,12 @@ STATICFILES_DIRS = [
 
 
 # Review configuration
+
+# This controls how many people should review one class.
 REVIEWER_THRESHOLD = 3
+
+# This controls how many comments are shown per review.
 COMMENTS_PER_REVIEW = 5
+
+# This controls the cutoff range for short comments.
 SHORT_COMMENT_THRESHOLD = 10
