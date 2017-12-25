@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from .models import Instructor, Section, Comment
+from .models import Instructor, Section, Comment, Review
 from .views import select_random_comments, get_next_section, COMMENTS_PER_REVIEW, SHORT_COMMENT_THRESHOLD
 
 
@@ -21,6 +21,14 @@ class ReviewTestCase(TestCase):
     def test_next_section(self):
         """ Get next section gets the next section that needs reviewing. """
         self.assertEqual(get_next_section(self.user), self.section)
+
+    def test_next_section_already_reviewed(self):
+        """ A user shouldn't review the same class twice. """
+        Review.objects.create(
+            section=self.section,
+            reviewer=self.user
+        )
+        self.assertEqual(get_next_section(self.user), None)
 
     def test_select_no_comments(self):
         """ Return an empty list if there are no comments to select. """
