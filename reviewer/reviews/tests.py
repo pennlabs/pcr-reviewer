@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
 
-from .models import Instructor, Section, Comment, Review
+from .models import Instructor, Section, Comment, Review, CommentRating
 from .helpers import select_random_comments, get_next_section, get_best_comments
 
 
@@ -82,6 +82,15 @@ class ReviewTestCase(TestCase):
 
     def test_best_comments(self):
         """ Make sure top rated reviews are returned. """
+        comment = Comment.objects.create(
+            section=self.section,
+            text="Good class!"
+        )
+        bad_comment = Comment.objects.create(
+            section=self.section,
+            text="This class is terrible."
+        )
+
         r1 = Review.objects.create(
             section=self.section,
             reviewer=self.user
@@ -94,3 +103,17 @@ class ReviewTestCase(TestCase):
             section=self.section,
             reviewer=self.user3
         )
+
+        for review in [r1, r2, r3]:
+            CommentRating.objects.create(
+                comment=comment,
+                review=review,
+                rating=1
+            )
+            CommentRating.objects.create(
+                comment=bad_comment,
+                review=review,
+                rating=5
+            )
+
+        self.assertTrue(get_best_comments(self.section), comment)
