@@ -67,6 +67,7 @@ $(document).ready(function() {
         <h4 class="card-title">Review</h4>
         <form action="{% url "review" %}" method="POST">
             {% csrf_token %}
+            <input type="hidden" name="section" value="{{ section.id }}" />
             <div class="form-group">
                 <p>Drag and drop to order the following comments from most constructive to least constructive.</p>
                 <div id="comments">

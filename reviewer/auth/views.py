@@ -4,15 +4,15 @@ from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 
 from django.db.models import Count
-from ..reviews.models import Comment, Review
+from ..reviews.models import Section, Review
 
 
 def index(request):
     if request.user.is_authenticated:
         context = {
-            "reviewed": Comment.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=2).count(),
-            "total": Comment.objects.count(),
-            "user_reviewed": Comment.objects.filter(review__reviewer=request.user).count(),
+            "reviewed": Section.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=3).count(),
+            "total": Section.objects.count(),
+            "user_reviewed": Review.objects.filter(reviewer=request.user).count(),
             "reviews": Review.objects.filter(reviewer=request.user).order_by("-id")[:10]
         }
 

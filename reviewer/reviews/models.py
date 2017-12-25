@@ -35,10 +35,18 @@ class Comment(models.Model):
 
 
 class Review(models.Model):
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
-    approve = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):
-        return "{} {} {}".format(self.reviewer.username, "approved" if self.approve else "rejected", self.comment)
+        return "<{}, {}>".format(self.reviewer.username, self.section)
+
+
+class CommentRating(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return "<{}, {}>".format(self.comment.text[:10], self.review.reviewer)
