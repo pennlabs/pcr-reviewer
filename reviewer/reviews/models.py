@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Tag(models.Model):
-    name = models.TextField()
+    name = models.TextField(unique=True)
 
     def __str__(self):
         return self.name
