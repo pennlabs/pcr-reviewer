@@ -75,7 +75,7 @@ def review(request):
     context = {
         "section": section,
         "comments": comments,
-        "tags": ",".join(Tag.objects.filter(review__section=section).values_list("name", flat=True))
+        "tags": ",".join(Tag.objects.filter(review__section=section).distinct().values_list("name", flat=True))
     }
 
     return render(request, "review.html", context)
