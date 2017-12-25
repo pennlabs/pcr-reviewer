@@ -18,11 +18,9 @@ def get_next_section(user):
 
 
 def select_random_comments(section):
-    comments = []
+    comments = list(Comment.objects.filter(commentrating__review__section=section, commentrating__rating=1))
     com = Comment.objects.annotate(text_len=Length("text")).filter(section=section, text_len__gt=10)
     com_len = com.count()
-    if com_len < 5:
-        return com
     items = list(range(com_len))
     random.shuffle(items)
     for x in items:
@@ -30,6 +28,7 @@ def select_random_comments(section):
             comments.append(com[x])
         if len(comments) >= 5:
             break
+    random.shuffle(comments)
     return comments
 
 
