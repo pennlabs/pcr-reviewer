@@ -1,14 +1,16 @@
 import random
 
 from django.conf import settings
-from django.db.models import Count
+from django.db.models import Count, Max
 from django.db.models.functions import Length
 
 from .models import Comment, Section
 
 
 def get_best_comments(section):
-    return Comment.objects.filter(section=section, commentrating__rating__lt=2).distinct().values_list("text", flat=True)
+    return Comment.objects.annotate(rating_count=Count("commentrating__rating"), rating=Max("commentrating__rating")) \
+                          .filter(section=section, rating__lte=2, rating_count__gte=settings.REVIEWER_THRESHOLD) \
+                          .distinct().values_list("text", flat=True)
 
 
 def get_next_comment(user):

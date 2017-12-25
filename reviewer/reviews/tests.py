@@ -116,4 +116,64 @@ class ReviewTestCase(TestCase):
                 rating=5
             )
 
-        self.assertTrue(get_best_comments(self.section), comment)
+        self.assertEqual(list(get_best_comments(self.section)), [comment.text])
+
+    def test_best_comment_controversial(self):
+        """ If the reviewers disagree on a comment, don't include it. """
+        comment = Comment.objects.create(
+            section=self.section,
+            text="Good class!"
+        )
+
+        r1 = Review.objects.create(
+            section=self.section,
+            reviewer=self.user
+        )
+        r2 = Review.objects.create(
+            section=self.section,
+            reviewer=self.user2
+        )
+        r3 = Review.objects.create(
+            section=self.section,
+            reviewer=self.user3
+        )
+
+        for review in [r1, r2]:
+            CommentRating.objects.create(
+                comment=comment,
+                review=review,
+                rating=1
+            )
+
+        CommentRating.objects.create(
+            comment=comment,
+            review=review,
+            rating=5
+        )
+
+        self.assertEqual(len(get_best_comments(self.section)), 0)
+
+    def test_best_comments_enough_reviewers(self):
+        """ Only include a comment if enough people have reviewed it. """
+        comment = Comment.objects.create(
+            section=self.section,
+            text="Good class!"
+        )
+
+        r1 = Review.objects.create(
+            section=self.section,
+            reviewer=self.user
+        )
+        r2 = Review.objects.create(
+            section=self.section,
+            reviewer=self.user2
+        )
+
+        for review in [r1, r2]:
+            CommentRating.objects.create(
+                comment=comment,
+                review=review,
+                rating=1
+            )
+
+        self.assertEqual(len(get_best_comments(self.section)), 0)
