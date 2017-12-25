@@ -10,6 +10,10 @@ def review(request):
     if request.method == "POST":
         section = get_object_or_404(Section, id=request.POST.get("section"))
 
+        if Review.objects.filter(section=section, reviewer=request.user).exists():
+            messages.error(request, "You have already reviewed this class!")
+            return redirect("review")
+
         order = [x.strip() for x in request.POST.get("order").split(",")]
         order = [get_object_or_404(Comment, id=x) for x in order if x]
 
