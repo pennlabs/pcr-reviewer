@@ -129,3 +129,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "reviewer", "static")
 ]
+
+
+# Review configuration
+REVIEWER_THRESHOLD = 3
+COMMENTS_PER_REVIEW = 5
+SHORT_COMMENT_THRESHOLD = 10

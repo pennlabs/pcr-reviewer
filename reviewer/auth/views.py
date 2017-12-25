@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.conf import settings
 
 from django.db.models import Count
 from ..reviews.models import Section, Review
@@ -10,7 +11,7 @@ from ..reviews.models import Section, Review
 def index(request):
     if request.user.is_authenticated:
         context = {
-            "reviewed": Section.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=3).count(),
+            "reviewed": Section.objects.annotate(num_reviews=Count("review")).filter(num_reviews__gte=settings.REVIEWER_THRESHOLD).count(),
             "total": Section.objects.count(),
             "user_reviewed": Review.objects.filter(reviewer=request.user).count(),
             "reviews": Review.objects.filter(reviewer=request.user).order_by("-id")[:10]
