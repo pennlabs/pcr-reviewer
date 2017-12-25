@@ -17,14 +17,21 @@ class Instructor(models.Model):
         return "<{}, {}>".format(self.id, self.name)
 
 
-class Comment(models.Model):
-    instructor = models.ForeignKey(Instructor, on_delete=models.PROTECT)
+class Section(models.Model):
+    name = models.CharField(max_length=15)
     term = models.CharField(max_length=5)
-    section = models.CharField(max_length=15)
+    instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "<{}, {}>".format(self.term, self.name)
+
+
+class Comment(models.Model):
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
     text = models.TextField()
 
     def __str__(self):
-        return "<{}, {}, {}>".format(self.term, self.section, self.text[:10])
+        return "<{}, {}>".format(self.section, self.text[:10])
 
 
 class Review(models.Model):

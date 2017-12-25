@@ -4,7 +4,7 @@ import sqlparse
 from django.core.management.base import BaseCommand, CommandError
 from django.db.utils import IntegrityError
 
-from ...models import Comment, Instructor
+from ...models import Comment, Instructor, Section
 
 
 class Command(BaseCommand):
@@ -49,13 +49,16 @@ class Command(BaseCommand):
 
         for statement in parsed:
             if statement.get_type() == "INSERT":
+                # Parse information from sql
                 info = statement[-2][1]
                 info = [x for x in info if not (x.ttype == sqlparse.tokens.Whitespace or x.ttype == sqlparse.tokens.Punctuation)]
                 inst_id = int(str(info[0])[1:-1])
                 inst_name = str(info[1])[1:-1]
                 section = str(info[3])[1:-1]
+                term = str(info[2])[1:-1]
                 text = str(info[-1])[1:-1].replace("''", "'")
 
+                # Statistics
                 instructors.add(inst_id)
                 sections.add(section)
                 comments += 1
@@ -66,6 +69,7 @@ class Command(BaseCommand):
                     self.stdout.write("Imported {} records...".format(comments))
 
                 if not fake:
+                    # Get or create instructor
                     try:
                         inst, _ = Instructor.objects.get_or_create(
                             id=inst_id,
@@ -74,10 +78,17 @@ class Command(BaseCommand):
                     except IntegrityError:
                         self.stdout.write(self.style.WARNING("Duplicate instructor object ({}, {}) with different names!").format(inst_id, inst_name))
                         inst = Instructor.objects.get(id=inst_id)
+
+                    # Get or create section
+                    sect, _ = Section.objects.get_or_create(
+                        name=section,
+                        term=term,
+                        instructor=inst
+                    )
+
+                    # Create comment
                     Comment.objects.create(
-                        instructor=inst,
-                        term=str(info[2])[1:-1],
-                        section=section,
+                        section=sect,
                         text=text
                     )
 
