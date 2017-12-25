@@ -42,6 +42,8 @@ class Command(BaseCommand):
         instructors = set()
         sections = set()
         comments = 0
+        long_comments = 0
+        length_check = 20
 
         self.stdout.write("Importing records...")
 
@@ -52,10 +54,13 @@ class Command(BaseCommand):
                 inst_id = int(str(info[0])[1:-1])
                 inst_name = str(info[1])[1:-1]
                 section = str(info[3])[1:-1]
+                text = str(info[-1])[1:-1].replace("''", "'")
 
                 instructors.add(inst_id)
                 sections.add(section)
                 comments += 1
+                if len(text) >= length_check:
+                    long_comments += 1
 
                 if comments % 1000 == 0:
                     self.stdout.write("Imported {} records...".format(comments))
@@ -73,11 +78,11 @@ class Command(BaseCommand):
                         instructor=inst,
                         term=str(info[2])[1:-1],
                         section=section,
-                        text=str(info[-1])[1:-1].replace("''", "'")
+                        text=text
                     )
 
         self.stdout.write(self.style.SUCCESS("Finished importing comment data!"))
 
         self.stdout.write(self.style.SUCCESS("Total Instructors: {}".format(len(instructors))))
         self.stdout.write(self.style.SUCCESS("Total Sections: {}".format(len(sections))))
-        self.stdout.write(self.style.SUCCESS("Total Comments: {}".format(comments)))
+        self.stdout.write(self.style.SUCCESS("Total Comments: {} ({} more than {} characters long)".format(comments, long_comments, length_check)))
