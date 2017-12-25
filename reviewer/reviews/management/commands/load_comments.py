@@ -24,6 +24,8 @@ class Command(BaseCommand):
 
         fake = options["fake"]
 
+        self.stdout.write("Loading from '{}'".format(filename))
+
         if fake:
             self.stdout.write(self.style.WARNING("Running in fake mode, no changes will be made to the database."))
 
