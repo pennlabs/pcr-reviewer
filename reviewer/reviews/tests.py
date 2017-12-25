@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .models import Instructor, Section, Comment, Review
-from .views import select_random_comments, get_next_section, COMMENTS_PER_REVIEW, SHORT_COMMENT_THRESHOLD
+from .helpers import select_random_comments, get_next_section, COMMENTS_PER_REVIEW, SHORT_COMMENT_THRESHOLD
 
 
 class ReviewTestCase(TestCase):
