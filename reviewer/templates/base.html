@@ -35,7 +35,7 @@
         {% endif %}
     </head>
     <body>
-        <nav class="navbar navbar-dark bg-primary">
+        <nav class="navbar">
             <a class="navbar-brand" href="{% url "index" %}">PCR Comment Reviewer</a>
             <div class="navbar-nav navbar-right">
                 {% if request.user.is_superuser %}
