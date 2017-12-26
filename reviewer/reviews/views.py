@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
 
 from .models import Comment, Review, Tag, Section, CommentRating
 from .helpers import get_next_section, select_random_comments
 
 
+@login_required
 def review(request):
     if request.method == "POST":
         section = get_object_or_404(Section, id=request.POST.get("section"))
@@ -59,6 +62,7 @@ def review(request):
     return render(request, "review.html", context)
 
 
+@login_required
 def tags(request):
     if "query" in request.GET:
         tags = Tag.objects.filter(name__icontains=request.GET.get("query"))
