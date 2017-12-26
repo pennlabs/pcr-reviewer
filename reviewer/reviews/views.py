@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
+from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 
 
@@ -76,3 +77,27 @@ def tags(request):
         tags = Tag.objects.all()
     tags = list(tags.values_list("name", flat=True))
     return JsonResponse({"tags": tags})
+
+
+@login_required
+def stats(request):
+    output = []
+    semesters = Section.objects.values("term").distinct().order_by("-term").values_list("term", flat=True)
+    comments = {x["section__term"]: x["count"] for x in Comment.objects.values("section__term").annotate(count=Count("section__term"))}
+    classes = {x["term"]: x["count"] for x in Section.objects.values("term").annotate(count=Count("term"))}
+    reviews = {x["term"]: x["count"] for x in Section.objects.values("term").annotate(count=Count("comment__commentrating__review", distinct=True))}
+
+    for semester in semesters:
+        values = {
+            "comments": comments.get(semester, 0),
+            "classes": classes.get(semester, 0),
+            "reviews": reviews.get(semester, 0)
+        }
+        output.append((semester, values))
+
+    context = {
+        "semesters": output,
+        "tags": Tag.objects.annotate(usage=Count("review__section", distinct=True)).order_by("usage", "name").all()
+    }
+
+    return render(request, "stats.html", context)

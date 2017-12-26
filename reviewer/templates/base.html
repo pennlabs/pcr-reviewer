@@ -39,6 +39,7 @@
         <nav class="navbar">
             <a class="navbar-brand" href="{% url "index" %}"><div id="logo"></div> Comment Reviewer</a>
             <div class="navbar-nav navbar-right">
+                <a class="nav-item nav-link" href="{% url "stats" %}"><i class="fa fa-line-chart"></i> Stats</a>
                 {% if request.user.is_superuser %}
                 <a class="nav-item nav-link" href="/admin"><i class="fa fa-star"></i> Admin</a>
                 {% endif %}

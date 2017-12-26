@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><i class="fa fa-star"></i> Overview</h4>
+                <div>Total Semesters: {{ semesters|length }}</div>
+                <div>Total Tags: {{ tags|length }}</div>
+            </div>
+        </div>
+        {% for semester, values in semesters %}
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><i class="fa fa-calendar"></i> {{ semester }}</h4>
+                <div>Total Comments: {{ values.comments }}</div>
+                <div>Total Classes: {{ values.classes }}</div>
+                <div>Total Reviews: {{ values.reviews }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><i class="fa fa-tag"></i> Tags</h4>
+                <p>Usage is the number of classes that are associated with the tag. A tag is counted as used if at least one reviewer added the tag to a class.</p>
+                <table class="table">
+                    <thead>
+                        <tr><th>Tag</th><th>Usage</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for tag in tags %}
+                        <tr><td>{{ tag.name }}</td><td>{{ tag.usage }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
