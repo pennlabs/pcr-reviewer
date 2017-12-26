@@ -4,6 +4,13 @@ body {
 #content {
     padding: 15px;
 }
+#footer {
+    font-size: 0.75em;
+    color: #aaa;
+    text-align: center;
+    margin: 5px;
+}
+
 
 .navbar-nav {
     -webkit-flex-direction: row;
@@ -20,7 +27,8 @@ body {
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
 }
 .center-card {
-    margin: 30px auto;
+    margin: 0 auto;
+    margin-top: 30px;
     max-width: 500px;
 }
 .center-card button {

@@ -7,7 +7,7 @@
         <p>Hello, <b>{{ request.user.username|title }}</b>!</p>
         <p><b>{{ reviewed }}</b> out of <b>{{ total }}</b> ({% widthratio reviewed total 100|floatformat %}%) classes have been reviewed completely.</p>
         <p>You have reviewed <b>{{ user_reviewed }}</b> class{{ user_reviewed|pluralize:"es" }} so far.</p>
-        <a href="{% url "review" %}" class="btn btn-success btn-lg"><i class="fa fa-play"></i> Continue Reviewing</a>
+        <a href="{% url "review" %}" class="btn btn-success"><i class="fa fa-play"></i> Continue Reviewing</a>
     </div>
 </div>
 <div class="card center-card">
