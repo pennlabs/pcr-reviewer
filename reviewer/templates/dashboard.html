@@ -6,7 +6,7 @@
         <h4 class="card-title">Overview</h4>
         <p>Hello, <b>{{ request.user.username|title }}</b>!</p>
         <p><b>{{ reviewed }}</b> out of <b>{{ total }}</b> ({% widthratio reviewed total 100|floatformat %}%) classes have been reviewed completely.</p>
-        <p>You have reviewed <b>{{ user_reviewed }}</b> classes so far.</p>
+        <p>You have reviewed <b>{{ user_reviewed }}</b> class{{ user_reviewed|pluralize:"es" }} so far.</p>
         <a href="{% url "review" %}" class="btn btn-success btn-lg">Continue Reviewing</a>
     </div>
 </div>
