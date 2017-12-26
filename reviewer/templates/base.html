@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>PCR Comment Reviewer</title>
+        <title>Comment Reviewer</title>
 
         <link rel='shortcut icon' type='image/x-icon' href='{% static "images/favicon.ico" %}' />
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,7 +37,7 @@
     </head>
     <body>
         <nav class="navbar">
-            <a class="navbar-brand" href="{% url "index" %}">PCR Comment Reviewer</a>
+            <a class="navbar-brand" href="{% url "index" %}">Comment Reviewer</a>
             <div class="navbar-nav navbar-right">
                 {% if request.user.is_superuser %}
                 <a class="nav-item nav-link" href="/admin"><i class="fa fa-star"></i> Admin</a>
