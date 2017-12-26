@@ -25,7 +25,8 @@ class Command(BaseCommand):
 
         self.stdout.write("Generating output...")
 
-        for section in Section.objects.all():
+        sections = Section.objects.all()
+        for section in sections:
             output.append({
                 "term": section.term,
                 "instructor": {
@@ -42,4 +43,4 @@ class Command(BaseCommand):
         with open(filename, "w") as outfile:
             json.dump(output, outfile, sort_keys=True, indent=4)
 
-        self.stdout.write(self.style.SUCCESS("Reviews exported!"))
+        self.stdout.write(self.style.SUCCESS("{} reviews exported!".format(sections.count())))
