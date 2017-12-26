@@ -27,7 +27,7 @@ SECRET_KEY = '9_1n&3fka^lktf)0s8ci-jq$_u)b)jn*jxo#posyn2%17l1jbc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "true").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "[::1]", "review.penncoursereview.com"]
 
 
 # Application definition
