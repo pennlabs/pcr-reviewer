@@ -7,8 +7,11 @@
             <div class="card-body">
                 <h4 class="card-title">Overview</h4>
                 <p>Hello, <b>{{ request.user.username|title }}</b>!</p>
-                <p><b>{{ reviewed }}</b> out of <b>{{ total }}</b> ({% widthratio reviewed total 100|floatformat %}%) classes have been reviewed completely.</p>
-                <p>You have reviewed <b>{{ user_reviewed }}</b> class{{ user_reviewed|pluralize:"es" }} so far.</p>
+                <p style="margin-bottom:0.5rem"><b>{{ reviewed }}</b> out of <b>{{ total }}</b> ({% widthratio reviewed total 100|floatformat %}%) classes have been reviewed completely.</p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width:{% widthratio reviewed total 100 %}%"></div>
+                </div>
+                <p style="margin-top:0.5rem">You have reviewed <b>{{ user_reviewed }}</b> class{{ user_reviewed|pluralize:"es" }} so far.</p>
                 <a href="{% url "review" %}" class="btn btn-success"><i class="fa fa-play"></i> Continue Reviewing</a>
             </div>
         </div>
