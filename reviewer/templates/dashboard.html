@@ -21,18 +21,20 @@
             <div class="card-body">
                 <h4 class="card-title">History</h4>
                 <p>You can see the most recent classes you have reviewed below.</p>
-                <table class="table">
-                    <thead>
-                        <tr><th>Section</th><th>Term</th><th>Instructor</th></tr>
-                    </thead>
-                    <tbody>
-                        {% for review in reviews %}
-                        <tr><td>{{ review.section.name }}</td><td>{{ review.section.term }}</td><td>{{ review.section.instructor.name|title }}</td></tr>
-                        {% empty %}
-                        <tr><td colspan="3">You have not reviewed any classes yet.</td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div style="overflow-x:auto">
+                    <table class="table">
+                        <thead>
+                            <tr><th>Section</th><th>Term</th><th>Instructor</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for review in reviews %}
+                            <tr><td>{{ review.section.name }}</td><td>{{ review.section.term }}</td><td>{{ review.section.instructor.name|title }}</td></tr>
+                            {% empty %}
+                            <tr><td colspan="3">You have not reviewed any classes yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
