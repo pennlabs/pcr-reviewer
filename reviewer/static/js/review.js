@@ -19,7 +19,11 @@ $(document).ready(function() {
         }
     });
     $("#comments").sortable().disableSelection();
-    $("form").submit(function() {
+    $("form").submit(function(e) {
         $("#order").val($("#comments .comment").map(function() { return $(this).attr("data-id"); }).get().join());
+        if (!$("#tags").val()) {
+            e.preventDefault();
+            Messenger().error("Please add at least one tag!");
+        }
     });
 });

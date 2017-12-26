@@ -20,14 +20,19 @@ def review(request):
         order = [x.strip() for x in request.POST.get("order").split(",")]
         order = [get_object_or_404(Comment, id=x) for x in order if x]
 
+        tags = [x.strip() for x in request.POST.get("tags", "").split(",")]
+        tags = [x.lower() for x in tags if x]
+
+        if not tags:
+            messages.error(request, "You must submit at least one tag per review!")
+            return redirect("review")
+
         if len(order) >= 1:
             review = Review.objects.create(
                 section=section,
                 reviewer=request.user
             )
 
-            tags = [x.strip() for x in request.POST.get("tags", "").split(",")]
-            tags = [x.lower() for x in tags if x]
             for tag in tags:
                 tag, _ = Tag.objects.get_or_create(
                     name=tag
