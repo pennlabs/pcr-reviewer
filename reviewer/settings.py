@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import dj_database_url
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'reviewer.auth',
     'reviewer.reviews',
     'django_extensions',
+    'raven.contrib.django.raven_compat'
 ]
 
 MIDDLEWARE = [
@@ -129,6 +131,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "reviewer", "static")
 ]
+
+
+# Sentry error reporting
+if 'SENTRY_DSN' in os.environ:
+    RAVEN_CONFIG = {
+        'dsn': os.getenv('SENTRY_DSN'),
+        'release': raven.fetch_git_sha(os.path.abspath(os.pardir))
+    }
 
 
 # Review configuration
