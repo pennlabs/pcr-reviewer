@@ -55,10 +55,10 @@ class Command(BaseCommand):
                 info = statement[-2][1]
                 info = [x for x in info if not (x.ttype == sqlparse.tokens.Whitespace or x.ttype == sqlparse.tokens.Punctuation)]
                 inst_id = int(str(info[0])[1:-1])
-                inst_name = str(info[1])[1:-1]
-                section = str(info[3])[1:-1]
-                term = str(info[2])[1:-1]
-                text = str(info[-1])[1:-1].replace("''", "'")
+                inst_name = str(info[1])[1:-1].strip()
+                section = str(info[3])[1:-1].strip()
+                term = str(info[2])[1:-1].strip()
+                text = str(info[-1])[1:-1].replace("''", "'").strip()
 
                 # Statistics
                 instructors.add(inst_id)
