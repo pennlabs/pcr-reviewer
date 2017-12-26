@@ -10,6 +10,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger.min.css" integrity="sha256-s9TkqCOAYSX0OL0SFkn9uuNWdDLIXKMUV0ZICMxDBC8=" crossorigin="anonymous" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/messenger/1.5.0/css/messenger-theme-future.min.css" integrity="sha256-m1IZSnXUbZcGUBF1o2+RGqtlRd5COHrl/hSHHjvCL9E=" crossorigin="anonymous" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static "css/base.css" %}">
         {% block css %}{% endblock %}
 
@@ -39,14 +40,16 @@
             <a class="navbar-brand" href="{% url "index" %}">PCR Comment Reviewer</a>
             <div class="navbar-nav navbar-right">
                 {% if request.user.is_superuser %}
-                <a class="nav-item nav-link" href="/admin">Admin</a>
+                <a class="nav-item nav-link" href="/admin"><i class="fa fa-star"></i> Admin</a>
                 {% endif %}
                 {% if request.user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url "logout" %}">Logout</a>
+                <a class="nav-item nav-link" href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Logout</a>
                 {% endif %}
             </div>
         </nav>
+        <div id="content">
         {% block content %}
         {% endblock %}
+        </div>
     </body>
 </html>

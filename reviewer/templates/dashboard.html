@@ -7,7 +7,7 @@
         <p>Hello, <b>{{ request.user.username|title }}</b>!</p>
         <p><b>{{ reviewed }}</b> out of <b>{{ total }}</b> ({% widthratio reviewed total 100|floatformat %}%) classes have been reviewed completely.</p>
         <p>You have reviewed <b>{{ user_reviewed }}</b> class{{ user_reviewed|pluralize:"es" }} so far.</p>
-        <a href="{% url "review" %}" class="btn btn-success btn-lg">Continue Reviewing</a>
+        <a href="{% url "review" %}" class="btn btn-success btn-lg"><i class="fa fa-play"></i> Continue Reviewing</a>
     </div>
 </div>
 <div class="card center-card">
@@ -15,13 +15,13 @@
         <h4 class="card-title">History</h4>
         <table class="table">
             <thead>
-                <tr><th>Class</th></tr>
+                <tr><th>Section</th><th>Semester</th><th>Instructor</th></tr>
             </thead>
             <tbody>
             {% for review in reviews %}
-            <tr><td>{{ review.section }}</td></tr>
+            <tr><td>{{ review.section.name }}</td><td>{{ review.section.term }}</td><td>{{ review.section.instructor.name }}</td></tr>
             {% empty %}
-            <tr><td>You have not reviewed any classes yet.</td></tr>
+            <tr><td colspan="3">You have not reviewed any classes yet.</td></tr>
             {% endfor %}
             </tbody>
         </table>
