@@ -61,6 +61,7 @@ def review(request):
     context = {
         "section": section,
         "comments": comments,
+        "total_comments": Comment.objects.filter(section=section).count(),
         "tags": ",".join(Tag.objects.filter(review__section=section).distinct().values_list("name", flat=True))
     }
 

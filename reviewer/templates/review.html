@@ -34,6 +34,7 @@ var TAG_ENDPOINT = "{% url "tags" %}";
                     </div>
                     {% endfor %}
                 </div>
+                <small style="color:#aaa" class="float-right">Showing <b>{{ comments|length }}</b> out of <b>{{ total_comments }}</b> comments for this class.</small>
             </div>
             <input type="hidden" id="order" name="order" />
             <div class="form-group">
