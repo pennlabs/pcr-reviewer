@@ -10,6 +10,15 @@ body {
     text-align: center;
     margin: 5px;
 }
+#logo {
+    vertical-align: sub;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../images/logo.png");
+    background-size: cover;
+    margin-right: 5px;
+}
 
 
 .navbar-nav {
