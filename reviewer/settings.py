@@ -137,7 +137,7 @@ STATICFILES_DIRS = [
 if 'SENTRY_DSN' in os.environ:
     RAVEN_CONFIG = {
         'dsn': os.getenv('SENTRY_DSN'),
-        'release': raven.fetch_git_sha(os.path.abspath(os.pardir))
+        'release': raven.fetch_git_sha(os.path.abspath(os.curdir))
     }
 
 
