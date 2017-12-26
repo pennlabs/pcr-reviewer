@@ -12,7 +12,9 @@
                     <div class="progress-bar" role="progressbar" style="width:{% widthratio reviewed total 100 %}%"></div>
                 </div>
                 <p style="margin-top:0.5rem">You have reviewed <b>{{ user_reviewed }}</b> class{{ user_reviewed|pluralize:"es" }} so far.</p>
+                {% if reviewed < total %}
                 <a href="{% url "review" %}" class="btn btn-success"><i class="fa fa-play"></i> Continue Reviewing</a>
+                {% endif %}
             </div>
         </div>
         <div class="card">
