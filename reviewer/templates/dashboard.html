@@ -10,4 +10,21 @@
         <a href="{% url "review" %}" class="btn btn-success btn-lg">Continue Reviewing</a>
     </div>
 </div>
+<div class="card center-card">
+    <div class="card-body">
+        <h4 class="card-title">History</h4>
+        <table class="table">
+            <thead>
+                <tr><th>Class</th></tr>
+            </thead>
+            <tbody>
+            {% for review in reviews %}
+            <tr><td>{{ review.section }}</td></tr>
+            {% empty %}
+            <tr><td>You have not reviewed any classes yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
