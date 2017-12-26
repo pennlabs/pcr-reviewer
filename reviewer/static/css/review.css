@@ -1,5 +1,6 @@
 pre {
     white-space: pre-wrap;
+    margin-bottom: 0;
 }
 button[type=submit] {
     width: 150px;
@@ -18,7 +19,8 @@ button[type=submit] {
     padding: 5px;
 }
 .center-card {
-    max-width: 800px;
+    max-width: 760px;
+    margin-top: 0;
 }
 .section {
     color: #aaa;
