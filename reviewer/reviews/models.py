@@ -23,7 +23,7 @@ class Section(models.Model):
     instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "<{}, {}>".format(self.term, self.name)
+        return "<{}, {}, {}>".format(self.term, self.name, self.instructor.name)
 
 
 class Comment(models.Model):
