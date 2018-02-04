@@ -1,4 +1,5 @@
 import os
+import csv
 import sqlparse
 
 from django.core.management.base import BaseCommand, CommandError
@@ -13,6 +14,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("file", nargs="?", type=str)
         parser.add_argument("--fake", action="store_true", dest="fake", help="Don't actually import anything into the database.")
+        parser.add_argument("--output", type=str, dest="output", default=None, help="Output to a csv file instead.")
 
     def handle(self, *args, **options):
         if options["file"]:
@@ -23,6 +25,7 @@ class Command(BaseCommand):
             raise CommandError("The file '{}' does not exist!".format(filename))
 
         fake = options["fake"]
+        output_file = options["output"]
 
         self.stdout.write("Loading from '{}'".format(filename))
 
@@ -49,6 +52,11 @@ class Command(BaseCommand):
 
         self.stdout.write("Importing records...")
 
+        if output_file:
+            out = open(output_file, "w")
+            writer = csv.writer(out)
+            writer.writerow(["Instructor", "Section", "Term", "Comment"])
+
         for statement in parsed:
             if statement.get_type() == "INSERT":
                 # Parse information from sql
@@ -71,28 +79,36 @@ class Command(BaseCommand):
                     self.stdout.write("Imported {} records...".format(comments))
 
                 if not fake:
-                    # Get or create instructor
-                    try:
-                        inst, _ = Instructor.objects.get_or_create(
-                            id=inst_id,
-                            name=inst_name
+                    if output_file:
+                        writer.writerow([inst_name, section, term, text])
+                    else:
+                        # Get or create instructor
+                        try:
+                            inst, _ = Instructor.objects.get_or_create(
+                                id=inst_id,
+                                name=inst_name
+                            )
+                        except IntegrityError:
+                            self.stdout.write(
+                                self.style.WARNING("Duplicate instructor object ({}, {}) with different names!").format(inst_id, inst_name)
+                            )
+                            inst = Instructor.objects.get(id=inst_id)
+
+                        # Get or create section
+                        sect, _ = Section.objects.get_or_create(
+                            name=section,
+                            term=term,
+                            instructor=inst
                         )
-                    except IntegrityError:
-                        self.stdout.write(self.style.WARNING("Duplicate instructor object ({}, {}) with different names!").format(inst_id, inst_name))
-                        inst = Instructor.objects.get(id=inst_id)
 
-                    # Get or create section
-                    sect, _ = Section.objects.get_or_create(
-                        name=section,
-                        term=term,
-                        instructor=inst
-                    )
+                        # Create comment
+                        Comment.objects.create(
+                            section=sect,
+                            text=text
+                        )
 
-                    # Create comment
-                    Comment.objects.create(
-                        section=sect,
-                        text=text
-                    )
+        if output_file:
+            out.close()
 
         self.stdout.write(self.style.SUCCESS("Finished importing comment data!"))
 
