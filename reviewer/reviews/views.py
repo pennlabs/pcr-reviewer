@@ -24,6 +24,15 @@ def review(request):
         tags = [x.strip() for x in request.POST.get("tags", "").split(",")]
         tags = [x.lower() for x in tags if x]
 
+        try:
+            flags = [(int(x.split("_")[-1]), request.POST.get(x)) for x in request.POST if x.startswith("flags_")]
+            flags = [x for x in flags if x[1]]
+        except ValueError:
+            messages.error(request, "Errors occured while parsing flags!")
+            return redirect("review")
+
+        flags = {x: y.upper()[0] for x, y in flags}
+
         if not tags:
             messages.error(request, "You must submit at least one tag per review!")
             return redirect("review")
@@ -44,7 +53,8 @@ def review(request):
                 CommentRating.objects.create(
                     review=review,
                     comment=order[i],
-                    rating=i
+                    rating=i,
+                    flag=flags.get(order[i].id)
                 )
 
             messages.success(request, "Your review has been added!")

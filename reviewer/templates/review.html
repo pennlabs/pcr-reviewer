@@ -29,8 +29,13 @@ var TAG_ENDPOINT = "{% url "tags" %}";
                 <p>Drag and drop to order the following comments from most constructive to least constructive.</p>
                 <div id="comments">
                     {% for comment in comments %}
-                    <div class="comment" data-id="{{ comment.id }}">
+                    <div class="comment clearfix" data-id="{{ comment.id }}">
                         <pre>{{ comment.text }}</pre>
+                        <input type="hidden" name="flags_{{ comment.id }}" value="" />
+                        <div class="pull-right mt-1">
+                            <a href="#" class="inappropriate btn btn-sm btn-danger">Flag as Inappropriate</a>
+                            <a href="#" class="mark btn btn-sm btn-warning">Mark as Not Useful</a>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>

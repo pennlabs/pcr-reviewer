@@ -47,6 +47,7 @@ class CommentRating(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
     rating = models.IntegerField()
+    flag = models.CharField(max_length=1, choices=(('M', 'Not Useful'), ('I', 'Inappropriate')), null=True, default=None)
 
     def __str__(self):
         return "<{}, {}>".format(self.comment.text[:10], self.review.reviewer)
