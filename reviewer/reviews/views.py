@@ -33,10 +33,6 @@ def review(request):
 
         flags = {x: y.upper()[0] for x, y in flags}
 
-        if not tags:
-            messages.error(request, "You must submit at least one tag per review!")
-            return redirect("review")
-
         if len(order) >= 1:
             review = Review.objects.create(
                 section=section,

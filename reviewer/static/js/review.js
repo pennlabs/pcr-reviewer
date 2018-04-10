@@ -39,10 +39,6 @@ $(document).ready(function() {
     $("#comments").sortable().disableSelection();
     $("form").submit(function(e) {
         $("#order").val($("#comments .comment").map(function() { return $(this).attr("data-id"); }).get().join());
-        if (!$("#tags").val()) {
-            e.preventDefault();
-            Messenger().error("Please add at least one tag!");
-        }
         $("#comments .comment").each(function() {
             var id = $(this).attr("data-id");
             var mark = $(this).find(".mark").attr("value");
