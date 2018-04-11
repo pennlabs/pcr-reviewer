@@ -43,6 +43,11 @@ class Review(models.Model):
         return "<{}, {}>".format(self.reviewer.username, self.section)
 
 
+class Reservation(models.Model):
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    expiration = models.DateTimeField()
+
+
 class CommentRating(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     review = models.ForeignKey(Review, on_delete=models.CASCADE)

@@ -1,10 +1,11 @@
 import random
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.db.models import Count, Max
 from django.db.models.functions import Length
 
-from .models import Comment, Section
+from .models import Comment, Section, Reservation
 
 
 def get_best_comments(section):
@@ -20,9 +21,12 @@ def get_next_comment(user):
 
 
 def get_next_section(user):
-    return Section.objects.annotate(num_reviews=Count("review")) \
+    Reservation.objects.filter(expiration__lt=datetime.now()).delete()
+    section = Section.objects.annotate(num_reviews=Count("review"), num_reservations=Count("reservation")) \
         .filter(num_reviews__lt=settings.REVIEWER_THRESHOLD) \
-        .exclude(review__reviewer=user).first()
+        .exclude(review__reviewer=user).order_by("num_reservations").first()
+    Reservation.objects.create(section=section, expiration=datetime.now() + timedelta(minutes=1))
+    return section
 
 
 def select_random_comments(section):
