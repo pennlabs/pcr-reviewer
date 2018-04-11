@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 from .models import Comment, Review, Tag, Section, CommentRating
@@ -92,6 +93,7 @@ def stats(request):
     comments = {x["section__term"]: x["count"] for x in Comment.objects.values("section__term").annotate(count=Count("section__term"))}
     classes = {x["term"]: x["count"] for x in Section.objects.values("term").annotate(count=Count("term"))}
     reviews = {x["term"]: x["count"] for x in Section.objects.values("term").annotate(count=Count("comment__commentrating__review", distinct=True))}
+    leaderboard = User.objects.annotate(reviews=Count("review")).order_by("reviews")[:10]
 
     for semester in semesters:
         values = {
@@ -103,7 +105,8 @@ def stats(request):
 
     context = {
         "semesters": output,
-        "tags": Tag.objects.annotate(usage=Count("review__section", distinct=True)).order_by("usage", "name").all()
+        "tags": Tag.objects.annotate(usage=Count("review__section", distinct=True)).order_by("usage", "name").all(),
+        "leaderboard": leaderboard
     }
 
     return render(request, "stats.html", context)

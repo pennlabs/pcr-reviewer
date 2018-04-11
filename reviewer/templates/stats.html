@@ -25,6 +25,23 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
+                <h4 class="card-title"><i class="fa fa-star"></i> Leaderboard</h4>
+                <table class="table">
+                    <thead>
+                        <tr><th>Rank</th><th>User</th><th>Reviews</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for user in leaderboard %}
+                        <tr><td>{{ forloop.counter }}</td><td>{{ user.username }}</td><td>{{ user.review_set.count }}</td></tr>
+                        {% empty %}
+                        <tr><td colspan="3">No users have submitted any reviews yet.</td></td>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
                 <h4 class="card-title"><i class="fa fa-tag"></i> Tags</h4>
                 <p>Usage is the number of classes that are associated with the tag. A tag is counted as used if at least one reviewer added the tag to a class.</p>
                 <table class="table">
@@ -34,6 +51,8 @@
                     <tbody>
                         {% for tag in tags %}
                         <tr><td>{{ tag.name }}</td><td>{{ tag.usage }}</td></tr>
+                        {% empty %}
+                        <tr><td colspan="2">No reviewers have added any tags.</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
