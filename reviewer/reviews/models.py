@@ -45,7 +45,7 @@ class Review(models.Model):
 
 class Reservation(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
-    expiration = models.DateTimeField()
+    expiration = models.DateTimeField(db_index=True)
 
 
 class CommentRating(models.Model):
