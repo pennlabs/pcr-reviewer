@@ -32,6 +32,9 @@ var TAG_ENDPOINT = "{% url "tags" %}";
                     <div class="comment clearfix" data-id="{{ comment.id }}">
                         <pre>{{ comment.text }}</pre>
                         <input type="hidden" name="flags_{{ comment.id }}" value="" />
+                        <div class="pull-left mt-1">
+                            <input type="number" class="rank form-control form-control-sm" />
+                        </div>
                         <div class="pull-right mt-1">
                             <a href="#" class="inappropriate btn btn-sm btn-danger">Flag as Inappropriate</a>
                             <a href="#" class="mark btn btn-sm btn-warning">Mark as Not Useful</a>

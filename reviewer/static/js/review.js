@@ -36,9 +36,21 @@ $(document).ready(function() {
             $(this).text("Mark as Not Useful").attr("value", "false");
         }
     });
-    $("#comments").sortable().disableSelection();
     $("form").submit(function(e) {
-        $("#order").val($("#comments .comment").map(function() { return $(this).attr("data-id"); }).get().join());
+        var order = $("#comments .comment").map(function() { return {"id": $(this).attr("data-id"), "rank": $(this).find(".rank").val()}; }).get();
+        var items = [0, 0, 0, 0, 0];
+        $.each(order, function(k, v) {
+            var rank = parseInt(v.rank);
+            if (!rank || rank < 1 || rank > 5) {
+                Messenger().error("Please rank comments from 1 to 5!");
+                e.preventDefault();
+                return false;
+            }
+            else {
+                items[rank - 1] = v.id;
+            }
+        });
+        $("#order").val(items.reverse().join());
         $("#comments .comment").each(function() {
             var id = $(this).attr("data-id");
             var mark = $(this).find(".mark").attr("value");

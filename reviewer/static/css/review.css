@@ -6,7 +6,7 @@ button[type=submit] {
     width: 150px;
 }
 .comment {
-    cursor: pointer;
+    user-select: none;
     padding: 5px;
     border: 1px solid #ccc;
     margin-bottom: 5px;
