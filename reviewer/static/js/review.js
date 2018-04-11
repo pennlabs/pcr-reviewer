@@ -38,7 +38,7 @@ $(document).ready(function() {
     });
     $("form").submit(function(e) {
         var order = $("#comments .comment").map(function() { return {"id": $(this).attr("data-id"), "rank": $(this).find(".rank").val()}; }).get();
-        var items = [0, 0, 0, 0, 0];
+        var items = [null, null, null, null, null];
         $.each(order, function(k, v) {
             var rank = parseInt(v.rank);
             if (!rank || rank < 1 || rank > 5) {
@@ -50,7 +50,7 @@ $(document).ready(function() {
                 items[rank - 1] = v.id;
             }
         });
-        $("#order").val(items.reverse().join());
+        $("#order").val(items.filter(rank => rank !== null).reverse().join());
         $("#comments .comment").each(function() {
             var id = $(this).attr("data-id");
             var mark = $(this).find(".mark").attr("value");
