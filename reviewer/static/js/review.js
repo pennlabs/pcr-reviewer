@@ -40,15 +40,23 @@ $(document).ready(function() {
         if (isFinite(e.key)) {
             $(this).val(e.key);
         }
+        if (e.key.length == 1) {
+            e.preventDefault();
+        }
+        if (e.key == 'i') {
+            $(this).closest(".comment").find(".inappropriate").click();
+            return;
+        }
+        if (e.key == 'n') {
+            $(this).closest(".comment").find(".mark").click();
+            return;
+        }
         var next = $(this).closest(".comment").next().find(".rank");
         if (next.length) {
             next.focus();
         }
         else {
             $("button[type='submit']").focus();
-        }
-        if (e.key.length == 1) {
-            e.preventDefault();
         }
     });
     $(".rank").first().focus();
