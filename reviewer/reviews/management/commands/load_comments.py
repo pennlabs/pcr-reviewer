@@ -12,7 +12,7 @@ class Command(BaseCommand):
     help = "Imports reviews from a sql file."
 
     def add_arguments(self, parser):
-        parser.add_argument("file", nargs="?", type=str)
+        parser.add_argument("file", nargs="?", type=str, help="File to load comments from. Usually 'TEST_PCR_COMMENTS_V.sql'.")
         parser.add_argument("--fake", action="store_true", dest="fake", help="Don't actually import anything into the database.")
         parser.add_argument("--output", type=str, dest="output", default=None, help="Output to a csv file instead.")
 
