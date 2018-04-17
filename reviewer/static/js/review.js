@@ -36,6 +36,22 @@ $(document).ready(function() {
             $(this).text("Mark as Not Useful").attr("value", "false");
         }
     });
+    $(".rank").keydown(function(e) {
+        if (isFinite(e.key)) {
+            $(this).val(e.key);
+        }
+        var next = $(this).closest(".comment").next().find(".rank");
+        if (next.length) {
+            next.focus();
+        }
+        else {
+            $("button[type='submit']").focus();
+        }
+        if (e.key.length == 1) {
+            e.preventDefault();
+        }
+    });
+    $(".rank").first().focus();
     $("form").submit(function(e) {
         var order = $("#comments .comment").map(function() { return {"id": $(this).attr("data-id"), "rank": $(this).find(".rank").val()}; }).get();
         var items = [null, null, null, null, null];
