@@ -47,6 +47,11 @@ $(document).ready(function() {
                 return false;
             }
             else {
+                if (items[rank - 1] !== null) {
+                    Messenger().error("Please give each comment a unique ranking!");
+                    e.preventDefault();
+                    return false;
+                }
                 items[rank - 1] = v.id;
             }
         });
