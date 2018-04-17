@@ -39,24 +39,22 @@ $(document).ready(function() {
     $(".rank").keydown(function(e) {
         if (isFinite(e.key)) {
             $(this).val(e.key);
+            var next = $(this).closest(".comment").next().find(".rank");
+            if (next.length) {
+                next.focus();
+            }
+            else {
+                $("button[type='submit']").focus();
+            }
         }
         if (e.key.length == 1) {
             e.preventDefault();
         }
         if (e.key == 'i') {
             $(this).closest(".comment").find(".inappropriate").click();
-            return;
         }
         if (e.key == 'n') {
             $(this).closest(".comment").find(".mark").click();
-            return;
-        }
-        var next = $(this).closest(".comment").next().find(".rank");
-        if (next.length) {
-            next.focus();
-        }
-        else {
-            $("button[type='submit']").focus();
         }
     });
     $(".rank").first().focus();
