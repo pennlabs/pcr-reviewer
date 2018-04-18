@@ -70,7 +70,7 @@ $(document).ready(function() {
             }
             else {
                 if (items[rank - 1] !== null) {
-                    Messenger().error("Please give each comment a unique ranking!");
+                    Messenger().error("Please give each comment a unique ranking! There are duplicate " + rank + "s.");
                     e.preventDefault();
                     return false;
                 }
