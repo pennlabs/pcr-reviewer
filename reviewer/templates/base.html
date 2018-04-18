@@ -43,7 +43,7 @@
                 <a class="nav-item nav-link" href="{% url "stats" %}"><i class="fa fa-line-chart"></i> Stats</a>
                 {% endif %}
                 {% if request.user.is_superuser %}
-                <a class="nav-item nav-link" href="/admin"><i class="fa fa-star"></i> Admin</a>
+                <a class="nav-item nav-link" href="{% url "admin:index" %}"><i class="fa fa-star"></i> Admin</a>
                 {% endif %}
                 {% if request.user.is_authenticated %}
                 <a class="nav-item nav-link" href="{% url "logout" %}"><i class="fa fa-sign-out"></i> Logout</a>
