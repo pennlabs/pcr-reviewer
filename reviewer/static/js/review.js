@@ -64,7 +64,7 @@ $(document).ready(function() {
         $.each(order, function(k, v) {
             var rank = parseInt(v.rank);
             if (!rank || rank < 1 || rank > 5) {
-                Messenger().error("Please rank comments from 1 to 5!");
+                Messenger().error("Please rank all comments from 1 to 5!");
                 e.preventDefault();
                 return false;
             }
