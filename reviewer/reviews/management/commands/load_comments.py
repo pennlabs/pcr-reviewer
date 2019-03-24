@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
         self.stdout.write("Parsing sql file...")
 
-        with open(filename, "r") as f:
+        with open(filename, "rb") as f:
             parsed = sqlparse.parse(f.read())
 
         self.stdout.write(self.style.SUCCESS("Finished parsing sql file!"))
