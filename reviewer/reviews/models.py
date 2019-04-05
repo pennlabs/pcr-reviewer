@@ -35,24 +35,16 @@ class Comment(models.Model):
 
 
 class Review(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
+    flag = models.CharField(max_length=1, choices=(('A', 'Approved'), ('M', 'Not Useful'), ('I', 'Inappropriate')), null=True, default=None)
 
     def __str__(self):
-        return "<{}, {}>".format(self.reviewer.username, self.section)
+        return "<{}, {}, {}>".format(self.comment.text[:10], self.reviewer.username, self.section)
 
 
 class Reservation(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
     expiration = models.DateTimeField(db_index=True)
-
-
-class CommentRating(models.Model):
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    review = models.ForeignKey(Review, on_delete=models.CASCADE)
-    rating = models.IntegerField()
-    flag = models.CharField(max_length=1, choices=(('M', 'Not Useful'), ('I', 'Inappropriate')), null=True, default=None)
-
-    def __str__(self):
-        return "<{}, {}>".format(self.comment.text[:10], self.review.reviewer)
