@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
 from .models import Comment, Review, Tag, Section
-from .helpers import get_next_section, select_random_comments
+from .helpers import get_next_section, select_random_comment
 
 
 @login_required
@@ -41,11 +41,13 @@ def review(request):
         messages.success(request, "All comments have been reviewed!")
         return redirect("index")
 
-    comments = select_random_comments(section)
+    comment = select_random_comment(section)
+    if comment is None:
+        raise Http404('Unable to randomly select a comment.')
 
     context = {
         "section": section,
-        "comments": comments,
+        "comment": comment,
         "total_comments": Comment.objects.filter(section=section).count(),
         "tags": ",".join(Tag.objects.filter(review__section=section).distinct().values_list("name", flat=True))
     }
