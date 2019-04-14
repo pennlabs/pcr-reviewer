@@ -26,7 +26,7 @@ var TAG_ENDPOINT = "{% url "tags" %}";
             {% csrf_token %}
             <input type="hidden" name="section" value="{{ section.id }}" />
             <div class="form-group">
-                <p>Order the following comments from most constructive (5) to least constructive (1).</p>
+                <p>Review the following comment:</p>
                 <div id="comment" class="comment clearfix">
                     <pre>{{ comment.text }}</pre>
                     <input type="hidden" name="comment" value="{{ comment.id }}"
