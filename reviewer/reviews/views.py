@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
-from .models import Comment, Review, Tag, Section, CommentRating
+from .models import Comment, Review, Tag, Section
 from .helpers import get_next_section, select_random_comments
 
 
@@ -18,7 +18,7 @@ def review(request):
             messages.error(request, "You have already reviewed this class!")
             return redirect("review")
 
-        comment = get_object_or_404(Comment, id=request.POST.get("comment")
+        comment = get_object_or_404(Comment, id=request.POST.get("comment"))
         tags = [x.strip() for x in request.POST.get("tags", "").split(",")]
         tags = [x.lower() for x in tags if x]
         flag = request.POST.get("flag")

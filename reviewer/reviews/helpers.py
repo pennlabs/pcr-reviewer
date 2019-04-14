@@ -32,7 +32,7 @@ def get_next_section(user):
 
 
 def select_random_comments(section):
-    comments = list(Comment.objects.filter(commentrating__review__section=section, commentrating__rating=1))
+    comments = list(Comment.objects.filter(review__section=section))
     com_all = Comment.objects.annotate(text_len=Length("text")).filter(section=section)
     com_short = com_all.filter(text_len__lte=settings.SHORT_COMMENT_THRESHOLD)
     com = com_all.filter(text_len__gt=settings.SHORT_COMMENT_THRESHOLD)
