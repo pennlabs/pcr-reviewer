@@ -6,13 +6,14 @@ from django.utils import timezone
 from django.db.models import Count, Max
 from django.db.models.functions import Length
 
-from .models import Comment, Section, Reservation
+from .models import Comment, Section, Reservation, Review
 
 
 def get_best_comments(section):
-    return Comment.objects.annotate(review_count=Count("review")) \
-                          .filter(section=section, review__flag="A", review_count__gte=settings.REVIEWER_THRESHOLD) \
-                          .distinct().values_list("text", flat=True)
+    return Comment.objects.filter(section=section, review__flag="A") \
+                          .annotate(review_count=Count("review")) \
+                          .filter(review_count__gte=settings.REVIEWER_THRESHOLD).distinct() \
+                          .values_list("text", flat=True)
 
 
 def get_next_comment(user):
