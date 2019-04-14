@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.conf import settings
 from django.contrib.auth.models import User
 
 from .models import Instructor, Section, Comment, Review
@@ -88,7 +87,7 @@ class ReviewTestCase(TestCase):
             section=self.section,
             text="This class is terrible."
         )
-        
+
         for user in [self.user, self.user2, self.user3]:
             Review.objects.create(
                 comment=comment,
@@ -162,5 +161,5 @@ class ReviewTestCase(TestCase):
             reviewer=self.user2,
             flag=self.approve
         )
-    
+
         self.assertEqual(len(get_best_comments(self.section)), 0)
