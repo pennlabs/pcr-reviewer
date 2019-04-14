@@ -46,6 +46,7 @@ class ReviewTestCase(TestCase):
         comment = select_random_comment(self.section)
         self.assertEqual(comment, None)
 
+    # TODO: Rework test to work with new model scheme
     '''
     def test_select_long_short_comments(self):
         """ Make sure long comments are selected, and then short ones. """

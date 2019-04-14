@@ -3,10 +3,10 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.utils import timezone
-from django.db.models import Count, Max
+from django.db.models import Count
 from django.db.models.functions import Length
 
-from .models import Comment, Section, Reservation, Review
+from .models import Comment, Section, Reservation
 
 
 def get_best_comments(section):
@@ -48,4 +48,3 @@ def select_random_comment(section):
         if x.text not in seen:
             return x
     return None
-        
