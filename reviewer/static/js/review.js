@@ -50,6 +50,6 @@ $(document).ready(function() {
         var mark = $(this).find(".mark").attr("value");
         var inap = $(this).find(".inappropriate").attr("value");
         var appr = $(this).find(".approve").attr("value");
-        $(this).find("input[name=flag]").val(inap == "true" ? "inappropriate" : (mark == "true" ?  "inappropriate" : (appr == "true" ? "approve" : "")));
+        $(this).find("input[name=flag]").val(inap == "true" ? "I" : (mark == "true" ?  "M" : (appr == "true" ? "A" : "")));
     });
 });
