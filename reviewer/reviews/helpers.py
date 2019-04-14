@@ -10,8 +10,8 @@ from .models import Comment, Section, Reservation
 
 
 def get_best_comments(section):
-    return Comment.objects.annotate(rating_count=Count("commentrating__rating"), rating=Max("commentrating__rating")) \
-                          .filter(section=section, rating__lte=settings.COMMENT_THRESHOLD, rating_count__gte=settings.REVIEWER_THRESHOLD) \
+    return Comment.objects.annotate(review_count=Count("review")) \
+                          .filter(section=section, review__flag="A", review_count__gte=settings.REVIEWER_THRESHOLD) \
                           .distinct().values_list("text", flat=True)
 
 
