@@ -20,31 +20,28 @@ var TAG_ENDPOINT = "{% url "tags" %}";
     <div class="card-body">
         <div class="clearfix">
             <h4 class="card-title float-left">Review</h4>
-            <small class="section float-right">{{ section }}</small>
+            <p class="section float-right">{{ section }}</p>
         </div>
-        <form action="{% url "review" %}" method="POST">
+        <form id="review" action="{% url "review" %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="section" value="{{ section.id }}" />
             <div class="form-group">
                 <p>Review the following comment:</p>
                 <div id="comment" class="comment clearfix">
                     <pre>{{ comment.text }}</pre>
-                    <input type="hidden" name="comment" value="{{ comment.id }}"
-                    <input type="hidden" name="flag" value="" />
-                    <div class="pull-right mt-1">
-                        <a href="#" class="approve btn btn-sm btn-success">Approve Comment</a>
-                        <a href="#" class="inappropriate btn btn-sm btn-danger">Flag as Inappropriate</a>
-                        <a href="#" class="mark btn btn-sm btn-warning">Mark as Not Useful</a>
-                    </div>
+                    <input type="hidden" name="comment" value="{{ comment.id }}" />
                 </div>
                 <small style="color:#aaa" class="float-right">There are <b>{{ total_comments }}</b> comments for this class.</small>
             </div>
-            <input type="hidden" id="order" name="order" />
             <div class="form-group">
                 <p>(Optional) Add tags that are relevant to this class.</p>
                 <input id="tags" name="tags" value="{{ tags }}" />
             </div>
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <div class="pull-right mt-1">
+                <button name="flag" class="approve btn btn-sm btn-success" type="submit" value="A">Approve Comment</a>
+                <button name="flag" class="inappropriate btn btn-sm btn-danger" type="submit" value="I">Flag as Inappropriate</a>
+                <button name="flag" class="mark btn btn-sm btn-warning" type="submit" value="M">Mark as Not Useful</a>
+            </div>
         </form>
     </div>
 </div>

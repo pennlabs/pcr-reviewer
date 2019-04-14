@@ -2,8 +2,8 @@ pre {
     white-space: pre-wrap;
     margin-bottom: 0;
 }
-button[type=submit] {
-    width: 150px;
+button[name=flag] {
+    margin: 2px;
 }
 .comment {
     user-select: none;
