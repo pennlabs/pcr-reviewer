@@ -20,9 +20,6 @@ var TAG_ENDPOINT = "{% url "tags" %}";
     <div class="card-body">
         <div class="clearfix">
             <h4 class="card-title float-left">Review</h4>
-            {% if user.is_superuser %}
-                <p class="section float-right">{{ section }}</p>
-            {% endif %}
         </div>
         <form id="review" action="{% url "review" %}" method="POST">
             {% csrf_token %}
