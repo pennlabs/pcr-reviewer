@@ -31,8 +31,8 @@ def get_next_section(user):
     return section
 
 
-def select_random_comments(section):
-    comments = list(Comment.objects.filter(commentrating__review__section=section, commentrating__rating=1))
+def select_random_comment(section):
+    comments = list(Comment.objects.filter(review__section=section))
     com_all = Comment.objects.annotate(text_len=Length("text")).filter(section=section)
     com_short = com_all.filter(text_len__lte=settings.SHORT_COMMENT_THRESHOLD)
     com = com_all.filter(text_len__gt=settings.SHORT_COMMENT_THRESHOLD)
@@ -42,15 +42,9 @@ def select_random_comments(section):
     seen = set([x.text for x in comments])
     for x in items:
         if com[x].text not in seen:
-            comments.append(com[x])
-            seen.add(com[x].text)
-        if len(comments) >= settings.COMMENTS_PER_REVIEW:
-            break
+            return com[x]
     for x in com_short:
-        if len(comments) >= settings.COMMENTS_PER_REVIEW:
-            break
         if x.text not in seen:
-            comments.append(x)
-            seen.add(x.text)
-    comments.sort(key=lambda x: -len(x.text))
-    return comments
+            return x
+    return None
+        

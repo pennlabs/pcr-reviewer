@@ -36,53 +36,20 @@ $(document).ready(function() {
             $(this).text("Mark as Not Useful").attr("value", "false");
         }
     });
-    $(".rank").keydown(function(e) {
-        if (isFinite(e.key)) {
-            $(this).val(e.key);
-            var next = $(this).closest(".comment").next().find(".rank");
-            if (next.length) {
-                next.focus();
-            }
-            else {
-                $("button[type='submit']").focus();
-            }
+    $(".approve").click(function(e) {
+        e.preventDefault();
+        if ($(this).attr("value") != "true") {
+            $(this).text("Approved").attr("value", "true");
         }
-        if (e.key.length == 1) {
-            e.preventDefault();
-        }
-        if (e.key == 'i') {
-            $(this).closest(".comment").find(".inappropriate").click();
-        }
-        if (e.key == 'n') {
-            $(this).closest(".comment").find(".mark").click();
+        else {
+            $(this).text("Approve Comment").attr("value", "false");
         }
     });
-    $(".rank").first().focus();
     $("form").submit(function(e) {
-        var order = $("#comments .comment").map(function() { return {"id": $(this).attr("data-id"), "rank": $(this).find(".rank").val()}; }).get();
-        var items = [null, null, null, null, null];
-        $.each(order, function(k, v) {
-            var rank = parseInt(v.rank);
-            if (!rank || rank < 1 || rank > 5) {
-                Messenger().error("Please rank all comments from 1 to 5!");
-                e.preventDefault();
-                return false;
-            }
-            else {
-                if (items[rank - 1] !== null) {
-                    Messenger().error("Please give each comment a unique ranking! There are duplicate " + rank + "s.");
-                    e.preventDefault();
-                    return false;
-                }
-                items[rank - 1] = v.id;
-            }
-        });
         $("#order").val(items.filter(rank => rank !== null).reverse().join());
-        $("#comments .comment").each(function() {
-            var id = $(this).attr("data-id");
-            var mark = $(this).find(".mark").attr("value");
-            var inap = $(this).find(".inappropriate").attr("value");
-            $(this).find("input[name=flags_" + id + "]").val(inap == "true" ? "inappropriate" : (mark == "true" ? "mark" : ""));
-        });
+        var mark = $(this).find(".mark").attr("value");
+        var inap = $(this).find(".inappropriate").attr("value");
+        var appr = $(this).find(".approve").attr("value");
+        $(this).find("input[name=flag]").val(inap == "true" ? "inappropriate" : (mark == "true" ?  "inappropriate" : (appr == "true" ? "approve" : "")));
     });
 });
