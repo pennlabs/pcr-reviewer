@@ -27,9 +27,10 @@ var TAG_ENDPOINT = "{% url "tags" %}";
             <input type="hidden" name="section" value="{{ section.id }}" />
             <div class="form-group">
                 <p>Order the following comments from most constructive (5) to least constructive (1).</p>
-                <div class="comment clearfix" data-id="{{ comment.id }}">
+                <div id="comment" class="comment clearfix">
                     <pre>{{ comment.text }}</pre>
-                    <input type="hidden" name="flags_{{ comment.id }}" value="" />
+                    <input type="hidden" name="comment" value="{{ comment.id }}"
+                    <input type="hidden" name="flag" value="" />
                     <div class="pull-right mt-1">
                         <a href="#" class="approve btn btn-sm btn-success">Approve Comment</a>
                         <a href="#" class="inappropriate btn btn-sm btn-danger">Flag as Inappropriate</a>

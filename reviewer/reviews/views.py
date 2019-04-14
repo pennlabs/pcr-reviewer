@@ -33,7 +33,7 @@ def review(request):
             tag, _ = Tag.objects.get_or_create(
                 name=tag
             )
-        review.tags.add(tag)
+            review.tags.add(tag)
         return redirect("review")
 
     section = get_next_section(request.user)

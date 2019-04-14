@@ -47,12 +47,9 @@ $(document).ready(function() {
     });
     $("form").submit(function(e) {
         $("#order").val(items.filter(rank => rank !== null).reverse().join());
-        $("#comments .comment").each(function() {
-            var id = $(this).attr("data-id");
-            var mark = $(this).find(".mark").attr("value");
-            var inap = $(this).find(".inappropriate").attr("value");
-            var appr = $(this).find(".approve").attr("value");
-            $(this).find("input[name=flags_" + id + "]").val(inap == "true" ? "inappropriate" : (mark == "true" ?  "inappropriate" : (appr == "true" ? "approve" : "")));
-        });
+        var mark = $(this).find(".mark").attr("value");
+        var inap = $(this).find(".inappropriate").attr("value");
+        var appr = $(this).find(".approve").attr("value");
+        $(this).find("input[name=flag]").val(inap == "true" ? "inappropriate" : (mark == "true" ?  "inappropriate" : (appr == "true" ? "approve" : "")));
     });
 });
