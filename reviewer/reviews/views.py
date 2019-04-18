@@ -7,15 +7,16 @@ from django.contrib.auth.models import User
 
 
 from .models import Comment, Review, Tag, Section
-from .helpers import get_next_section, select_random_comment
+from .helpers import select_random_comment
 
 
 @login_required
 def review(request):
     if request.method == "POST":
-        section = get_object_or_404(Section, id=request.POST.get("section"))
-        if Review.objects.filter(section=section, reviewer=request.user).exists():
-            messages.error(request, "You have already reviewed this class!")
+        section = get_object_or_404(Comment, id=request.POST.get("section"))
+        comment = get_object_or_404(Comment, id=request.POST.get("comment"))
+        if Review.objects.filter(comment=comment, reviewer=request.user).exists():
+            messages.error(request, "You have already reviewed this comment!")
             return redirect("review")
 
         comment = get_object_or_404(Comment, id=request.POST.get("comment"))
@@ -34,19 +35,17 @@ def review(request):
                 name=tag
             )
             review.tags.add(tag)
-        return redirect("review")
+        return redirect("review")    
 
-    section = get_next_section(request.user)
+    comment = select_random_comment(request.user)
     if not section:
         messages.success(request, "All comments have been reviewed!")
         return redirect("index")
-
-    comment = select_random_comment(section)
     if comment is None:
         raise Http404('Unable to randomly select a comment.')
 
     context = {
-        "section": section,
+        "section": comment.section,
         "comment": comment,
         "total_comments": Comment.objects.filter(section=section).count(),
         "tags": ",".join(Tag.objects.filter(review__section=section).distinct().values_list("name", flat=True))
