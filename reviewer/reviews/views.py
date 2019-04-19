@@ -45,7 +45,7 @@ def review(request):
         raise Http404('Unable to randomly select a comment.')
 
     context = {
-        "section": comment.section,
+        "section": section,
         "comment": comment,
         "total_comments": Comment.objects.filter(section=section).count(),
         "tags": ",".join(Tag.objects.filter(review__section=section).distinct().values_list("name", flat=True))

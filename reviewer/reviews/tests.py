@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .models import Instructor, Section, Comment, Review
-from .helpers import select_random_comment, get_next_section, get_best_comments
+from .helpers import select_random_comment, get_best_comments
 
 
 class ReviewTestCase(TestCase):
@@ -22,27 +22,9 @@ class ReviewTestCase(TestCase):
         self.approve = "A"
         self.marked = "M"
 
-    def test_next_section(self):
-        """ Get next section gets the next section that needs reviewing. """
-        self.assertEqual(get_next_section(self.user), self.section)
-
-    def test_next_section_already_reviewed(self):
-        """ A user shouldn't review the same class twice. """
-        comment = Comment.objects.create(
-            section=self.section,
-            text="Good class!"
-        )
-        Review.objects.create(
-            comment=comment,
-            flag=self.approve,
-            section=self.section,
-            reviewer=self.user
-        )
-        self.assertEqual(get_next_section(self.user), None)
-
     def test_select_no_comments(self):
         """ Return None if there are no comments to select. """
-        comment = select_random_comment(self.section)
+        comment = select_random_comment(self.user)
         self.assertEqual(comment, None)
 
     # TODO: Rework test to work with new model scheme
@@ -70,7 +52,7 @@ class ReviewTestCase(TestCase):
             section=self.section,
             text=""
         )
-        comment = select_random_comment(self.section)
+        comment = select_random_comment(self.user)
         self.assertEqual(len(comment.text), 0)
 
     def test_best_comments_no_comments(self):

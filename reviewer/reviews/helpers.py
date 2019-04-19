@@ -28,24 +28,21 @@ def get_next_section(user):
 
 def select_random_comment(user):
     Reservation.objects.filter(expiration__lt=timezone.now()).delete()
-    comments = list(Comment.objects.annotate(num_reviewers=Count("review")+Count("reservation"),
-        text_len=Length("text"))
-        .filter(num_reviewers__lt=settings.REVIEWER_THRESHOLD)
-        .exclude(review__reviewer=user))
+    comments = Comment.objects.annotate(num_reviewers=Count("review")+Count("reservation"), text_len=Length("text"))\
+        .filter(num_reviewers__lt=settings.REVIEWER_THRESHOLD)\
+        .exclude(review__reviewer=user)
     com_short = comments.filter(text_len__lte=settings.SHORT_COMMENT_THRESHOLD)
     com = comments.filter(text_len__gt=settings.SHORT_COMMENT_THRESHOLD)
     com_len = com.count()
     items = list(range(com_len))
     random.shuffle(items)
-    seen = set([x.text for x in comments])
+    ret = None
     for x in items:
-        if com[x].text not in seen:
-            ret = com[x]
-            break
+        ret = com[x]
+        break
     for x in com_short:
-        if x.text not in seen:
-            ret = x
-            break
+        ret = x
+        break
     if ret is not None:
         Reservation.objects.create(comment=ret, expiration=timezone.now() + timedelta(minutes=5))
     return ret
