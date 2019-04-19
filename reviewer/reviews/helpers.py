@@ -15,6 +15,7 @@ def get_best_comments(section):
                           .filter(review_count__gte=settings.REVIEWER_THRESHOLD).distinct() \
                           .values_list("text", flat=True)
 
+
 def get_next_section(user):
     section = Section.objects.annotate(num_reviews=Count("review"), num_reservations=Count("reservation")) \
         .filter(num_reviews__lt=settings.REVIEWER_THRESHOLD) \
@@ -24,14 +25,15 @@ def get_next_section(user):
     else:
         return None
 
+
 def select_random_comment(user):
     Reservation.objects.filter(expiration__lt=timezone.now()).delete()
-    comments = list(Comment.objects.annotate(num_reviewers=Count("review")+Count("reservation")) \
-        .filter(num_reviewers__lt=settings.REVIEWER_THRESHOLD) \
+    comments = list(Comment.objects.annotate(num_reviewers=Count("review")+Count("reservation"),
+        text_len=Length("text"))
+        .filter(num_reviewers__lt=settings.REVIEWER_THRESHOLD)
         .exclude(review__reviewer=user))
-    com_all = Comment.objects.annotate(text_len=Length("text")).filter(section=section)
-    com_short = com_all.filter(text_len__lte=settings.SHORT_COMMENT_THRESHOLD)
-    com = com_all.filter(text_len__gt=settings.SHORT_COMMENT_THRESHOLD)
+    com_short = comments.filter(text_len__lte=settings.SHORT_COMMENT_THRESHOLD)
+    com = comments.filter(text_len__gt=settings.SHORT_COMMENT_THRESHOLD)
     com_len = com.count()
     items = list(range(com_len))
     random.shuffle(items)

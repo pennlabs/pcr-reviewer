@@ -35,7 +35,7 @@ def review(request):
                 name=tag
             )
             review.tags.add(tag)
-        return redirect("review")    
+        return redirect("review")
 
     comment = select_random_comment(request.user)
     if not section:
