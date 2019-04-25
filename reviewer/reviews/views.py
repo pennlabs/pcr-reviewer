@@ -35,6 +35,7 @@ def review(request):
                 name=tag
             )
             review.tags.add(tag)
+        Reservation.objects.filter(reviewer=request.user).delete()
         return redirect("review")
 
     comment = select_random_comment(request.user)
