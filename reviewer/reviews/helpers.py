@@ -34,5 +34,5 @@ def select_random_comment(user):
         ret = x
         break
     if ret is not None:
-        Reservation.objects.create(comment=ret, expiration=timezone.now() + timedelta(minutes=5))
+        Reservation.objects.create(comment=ret, expiration=timezone.now() + timedelta(minutes=5), reviewer=user)
     return ret
