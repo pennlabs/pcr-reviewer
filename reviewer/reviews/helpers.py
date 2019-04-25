@@ -16,19 +16,9 @@ def get_best_comments(section):
                           .values_list("text", flat=True)
 
 
-def get_next_section(user):
-    section = Section.objects.annotate(num_reviews=Count("review"), num_reservations=Count("reservation")) \
-        .filter(num_reviews__lt=settings.REVIEWER_THRESHOLD) \
-        .exclude(review__reviewer=user).order_by("num_reservations").first()
-    if section is not None:
-        return section
-    else:
-        return None
-
-
 def select_random_comment(user):
     Reservation.objects.filter(expiration__lt=timezone.now()).delete()
-    comments = Comment.objects.annotate(num_reviewers=Count("review")+Count("reservation"), text_len=Length("text"))\
+    comments = Comment.objects.annotate(num_reviewers=Count("review") + Count("reservation"), text_len=Length("text"))\
         .filter(num_reviewers__lt=settings.REVIEWER_THRESHOLD)\
         .exclude(review__reviewer=user)
     com_short = comments.filter(text_len__lte=settings.SHORT_COMMENT_THRESHOLD)
