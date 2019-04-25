@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.db.models import Count
 from django.db.models.functions import Length
 
-from .models import Comment, Section, Reservation
+from .models import Comment, Reservation
 
 
 def get_best_comments(section):

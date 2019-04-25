@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
-from .models import Comment, Review, Tag, Section
+from .models import Comment, Review, Tag, Section, Reservation
 from .helpers import select_random_comment
 
 
