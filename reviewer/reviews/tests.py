@@ -27,8 +27,6 @@ class ReviewTestCase(TestCase):
         comment = select_random_comment(self.user)
         self.assertEqual(comment, None)
 
-    # TODO: Rework test to work with new model scheme
-    '''
     def test_select_long_short_comments(self):
         """ Make sure long comments are selected, and then short ones. """
         for x in range(3):
@@ -42,9 +40,15 @@ class ReviewTestCase(TestCase):
                 text=str(x) + "A"*(settings.SHORT_COMMENT_THRESHOLD-3)
             )
         for x in range(3):
-            self.assertTrue(len(comments[x].text) > settings.SHORT_COMMENT_THRESHOLD)
-        self.assertTrue(len(comments[-1].text) < settings.SHORT_COMMENT_THRESHOLD)
-    '''
+            select_random_comment(self.user)
+            select_random_comment(self.user2)
+            comment = select_random_comment(self.user3)
+            self.assertTrue(len(comment.text) > settings.SHORT_COMMENT_THRESHOLD)
+        for x in range(3):
+            select_random_comment(self.user)
+            select_random_comment(self.user2)
+            comment = select_random_comment(self.user3)
+            self.assertTrue(len(comment.text) < settings.SHORT_COMMENT_THRESHOLD)
 
     def test_select_only_short_comments(self):
         """ If there are only short comments, return those. """
@@ -85,44 +89,6 @@ class ReviewTestCase(TestCase):
             )
 
         self.assertEqual(list(get_best_comments(self.section)), [comment.text])
-
-    # TODO: Discuss with other developers whether this test is still needed
-    '''
-    def test_best_comment_controversial(self):
-        """ If the reviewers disagree on a comment, don't include it. """
-        comment = Comment.objects.create(
-            section=self.section,
-            text="Good class!"
-        )
-
-        r1 = Review.objects.create(
-            section=self.section,
-            reviewer=self.user
-        )
-        r2 = Review.objects.create(
-            section=self.section,
-            reviewer=self.user2
-        )
-        r3 = Review.objects.create(
-            section=self.section,
-            reviewer=self.user3
-        )
-
-        for review in [r1, r2]:
-            CommentRating.objects.create(
-                comment=comment,
-                review=review,
-                rating=1
-            )
-
-        CommentRating.objects.create(
-            comment=comment,
-            review=r3,
-            rating=5
-        )
-
-        self.assertEqual(len(get_best_comments(self.section)), 0)
-    '''
 
     def test_best_comments_enough_reviewers(self):
         """ Only include a comment if enough people have reviewed it. """
