@@ -35,7 +35,7 @@ class ReviewTestCase(TestCase):
                 section=self.section,
                 text="Comment #" + str(x) + " - " + "A"*settings.SHORT_COMMENT_THRESHOLD
             )
-        for x in range(settings.COMMENTS_PER_REVIEW + 3):
+        for x in range(6):
             Comment.objects.create(
                 section=self.section,
                 text=str(x) + "A"*(settings.SHORT_COMMENT_THRESHOLD-3)
